@@ -1,0 +1,3 @@
+cargo:rustc-link-search=J:\MacroBoard\driver\target\thumbv6m-none-eabi\debug\build\rp2040-pac-5369ea7acc043955\out
+cargo:rerun-if-changed=device.x
+cargo:rerun-if-changed=build.rs

@@ -1,0 +1,1 @@
+{"rustc":7895727629726570510,"features":"","declared_features":"","target":0,"profile":0,"path":0,"deps":[[18064029358304025806,"build_script_build",false,16080210574679301758]],"local":[{"RerunIfChanged":{"output":"thumbv6m-none-eabi\\debug\\build\\packed_struct-d164127248bf07fb\\output","paths":["build.rs"]}}],"rustflags":["-C","link-arg=-Tlink.x"],"config":0,"compile_kind":0}

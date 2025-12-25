@@ -1,0 +1,1 @@
+seeeduino_xiao_rp2040::rp2040_hal::gpio::Pin<I, (dyn ValidFunction<FunctionSio<SioInput>> + 'static), PullDown>

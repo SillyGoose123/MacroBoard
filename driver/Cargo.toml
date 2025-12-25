@@ -1,0 +1,28 @@
+[package]
+name = "driver"
+version = "0.1.0"
+edition = "2024"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+
+[[bin]]
+name = "driver"
+path = "src/main.rs"
+test = false
+doctest = false
+bench = false
+
+[dependencies]
+seeeduino-xiao-rp2040 = "0.6.0"
+panic-halt = "1.0.0"
+cortex-m-rt = "0.7"
+cortex-m = "0.7.6"
+embedded-hal = "1.0.0"
+usbd-human-interface-device = "0.6.0"
+bsp = "0.1.2"

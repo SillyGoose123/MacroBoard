@@ -1,0 +1,9 @@
+J:\MacroBoard\driver\target\thumbv6m-none-eabi\release\deps\embedded_hal_nb-3cb0115db37aa202.d: C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\lib.rs C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\serial.rs C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\spi.rs
+
+J:\MacroBoard\driver\target\thumbv6m-none-eabi\release\deps\libembedded_hal_nb-3cb0115db37aa202.rlib: C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\lib.rs C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\serial.rs C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\spi.rs
+
+J:\MacroBoard\driver\target\thumbv6m-none-eabi\release\deps\libembedded_hal_nb-3cb0115db37aa202.rmeta: C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\lib.rs C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\serial.rs C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\spi.rs
+
+C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\lib.rs:
+C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\serial.rs:
+C:\Users\barto\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\embedded-hal-nb-1.0.0\src\spi.rs:
