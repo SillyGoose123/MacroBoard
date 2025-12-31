@@ -22,6 +22,7 @@ https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
 
 ## Web
 
+RUST GEHT NICHT, da web asm nicht aktuell is. also react daddy und ts-rs type gen
 
 ## Ideas
 
