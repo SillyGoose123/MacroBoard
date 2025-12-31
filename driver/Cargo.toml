@@ -19,10 +19,20 @@ doctest = false
 bench = false
 
 [dependencies]
+# Embedded stuff
 seeeduino-xiao-rp2040 = "0.6.0"
 panic-halt = "1.0.0"
 cortex-m-rt = "0.7"
 cortex-m = "0.7.6"
 embedded-hal = "1.0.0"
+embedded-alloc = "0.6.0"
+
+#LEDS
+ws2812-pio = "=0.8.0" #version must be 0.8.0 else it is incompatible to seeeduino-xiao-rp2040
+smart-leds = "=0.3.0"
+smart-leds-trait = "=0.2.1"
+
+# USB
 usbd-human-interface-device = "0.6.0"
-bsp = "0.1.2"
+usb-device = "0.3"
+frunk = "0.4.4"
