@@ -125,24 +125,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f578e8e2c440e7297e008bb5486a3a8a194775224bbc23729b0dbdfaeebf162e"
 
 [[package]]
-name = "driver"
-version = "0.1.0"
-dependencies = [
- "cortex-m",
- "cortex-m-rt",
- "embedded-alloc",
- "embedded-hal 1.0.0",
- "frunk",
- "panic-halt",
- "seeeduino-xiao-rp2040",
- "smart-leds",
- "smart-leds-trait",
- "usb-device",
- "usbd-human-interface-device",
- "ws2812-pio",
-]
-
-[[package]]
 name = "either"
 version = "1.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -209,6 +191,25 @@ name = "embedded-io"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
+
+[[package]]
+name = "firmware"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "embedded-alloc",
+ "embedded-hal 1.0.0",
+ "frunk",
+ "panic-halt",
+ "seeeduino-xiao-rp2040",
+ "smart-leds",
+ "smart-leds-trait",
+ "usb-device",
+ "usbd-human-interface-device",
+ "usbd-webusb",
+ "ws2812-pio",
+]
 
 [[package]]
 name = "frunk"
@@ -722,6 +723,14 @@ dependencies = [
  "num_enum 0.7.5",
  "option-block",
  "packed_struct",
+ "usb-device",
+]
+
+[[package]]
+name = "usbd-webusb"
+version = "1.0.2"
+source = "git+https://github.com/SillyGoose123/usbd-webusb#8784ff7a957668af363fc5b729e8aab67d5fd008"
+dependencies = [
  "usb-device",
 ]
 

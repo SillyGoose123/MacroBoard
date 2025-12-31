@@ -8,6 +8,7 @@ mod knob;
 mod led;
 mod summer;
 mod usb;
+mod macros;
 
 // REQUIRED so panic is set up correctly
 #[allow(unused_imports)]

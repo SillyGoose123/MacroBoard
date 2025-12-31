@@ -5,7 +5,7 @@ This project is split in two parts the embedded device driver and the web part f
 ## Technical
 The driver and the web page for configuring talk to each other via web usb.
 
-## Driver
+## Firmware
 
 ### Hardware info
 seeed studio RP2040
@@ -23,3 +23,6 @@ https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
 ## Web
 
 
+## Ideas
+
+- Shared Profiles => exported configs so => web parts

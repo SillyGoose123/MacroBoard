@@ -4,6 +4,5 @@ pub enum KeyAction {
 }
 
 impl KeyAction {
-  pub(crate) fn execute(&self) {
-  }
+    fn execute(&self) {}
 }

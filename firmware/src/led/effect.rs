@@ -1,15 +1,16 @@
-use smart_leds::{RGB8, colors};
 use crate::def_enum;
+use alloc::vec::Vec;
+use smart_leds::{RGB8, colors};
 
 #[derive(Eq, PartialEq)]
 pub struct Effect {
-    colors:  &'static [RGB8],
+    colors: Vec<RGB8>,
     time_diff: u32, //in milliseconds,
     ticks: u32,
 }
 
 impl Effect {
-    const fn new(colors: &'static [RGB8], time_diff: u32) -> Self {
+    pub(crate) const fn new(colors: Vec<RGB8>, time_diff: u32) -> Self {
         Self {
             colors,
             time_diff,
@@ -34,17 +35,10 @@ impl Effect {
 
 def_enum!(
   pub Effects => Effect {
-    Rainbow => Effect::new(RAINBOW_COLORS, 250),
-    Off => Effect::new(NONE_COLORS, 0),
+    Rainbow => Effect::new(RAINBOW_COLORS.to_vec(), 250),
+    Off => Effect::new(NONE_COLORS.to_vec(), 0),
   }
 );
 
-const RAINBOW_COLORS: &[RGB8] = &[
-  colors::BLUE,
-  colors::RED,
-  colors::GREEN,
-];
-
-const NONE_COLORS: &[RGB8] = &[
-  colors::BLACK,
-];
+const RAINBOW_COLORS: &[RGB8] = &[colors::BLUE, colors::RED, colors::GREEN];
+const NONE_COLORS: &[RGB8] = &[colors::BLACK];
