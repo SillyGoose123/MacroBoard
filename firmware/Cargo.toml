@@ -31,4 +31,4 @@ frunk = "0.4.4"
 usbd-webusb = {git = "https://github.com/SillyGoose123/usbd-webusb"}
 
 # To create frontend types
-ts-bind = {path = "J:/ts-bind-no-std/crates/ts-bind"}
+ts-bind = {git = "https://github.com/SillyGoose123/ts-bind-no-std"}

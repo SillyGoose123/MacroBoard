@@ -3,11 +3,11 @@ use seeeduino_xiao_rp2040::hal::Timer;
 use seeeduino_xiao_rp2040::hal::usb::UsbBus;
 use usb_device::bus::UsbBusAllocator;
 use usb_device::device::{StringDescriptors, UsbDevice, UsbDeviceBuilder};
-use usbd_webusb::{url_scheme, WebUsb};
+use usbd_webusb::{WebUsb, url_scheme};
 
 pub struct Web<'a> {
-  usb_dev: UsbDevice<'a, UsbBus>,
-  web_usb: WebUsb<UsbBus>,
+    usb_dev: UsbDevice<'a, UsbBus>,
+    web_usb: WebUsb<UsbBus>,
 }
 
 impl<'a> Web<'a> {
@@ -19,21 +19,15 @@ impl<'a> Web<'a> {
                 .product(PRODUCT)
                 .serial_number(SERIAL_NUMBER)])
             .unwrap()
+            .device_class(0x00) //per-interface
             .build();
 
-        Self {
-          usb_dev,
-          web_usb
-        }
+        Self { usb_dev, web_usb }
     }
 
     pub fn tick(&mut self) {
-      if !self.usb_dev.poll(&mut [&mut self.web_usb]) {
-        return;
-      }
-
-     
-
-
+        if !self.usb_dev.poll(&mut [&mut self.web_usb]) {
+            return;
+        }
     }
 }

@@ -778,6 +778,7 @@ checksum = "ab16f14aed21ee8bfd8ec22513f7287cd4a91aa92e44edfe2c17ddd004e92607"
 [[package]]
 name = "ts-bind"
 version = "0.1.7"
+source = "git+https://github.com/SillyGoose123/ts-bind-no-std#8b0a8e59cce5210f983df412b09896d5ea703629"
 dependencies = [
  "ts-bind-macros",
 ]
@@ -785,6 +786,7 @@ dependencies = [
 [[package]]
 name = "ts-bind-macros"
 version = "0.1.7"
+source = "git+https://github.com/SillyGoose123/ts-bind-no-std#8b0a8e59cce5210f983df412b09896d5ea703629"
 dependencies = [
  "anyhow",
  "convert_case",
