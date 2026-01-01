@@ -1,2 +1,2 @@
-pub mod led;
+pub mod led_driver;
 mod effect;

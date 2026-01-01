@@ -10,7 +10,8 @@ The driver and the web page for configuring talk to each other via web usb.
 
 ### Hardware info
 
-seeed studio RP2040
+[seeed studio RP2040](https://wiki.seeedstudio.com/XIAO-RP2040/)
+
 
 [https://github.com/rp-rs/rp-hal-boards/tree/main/boards/seeeduino-xiao-rp2040](https://github.com/rp-rs/rp-hal-boards/tree/main/boards/seeeduino-xiao-rp2040)
 
@@ -27,6 +28,7 @@ RUST GEHT NICHT, da web asm nicht aktuell is. also react daddy und ts-rs type ge
 ## Ideas
 
 -   Shared Profiles => exported configs so => web parts
+- Rust driver trait
 
 ## Knowledge
 

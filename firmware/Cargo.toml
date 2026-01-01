@@ -4,31 +4,33 @@ version = "0.1.0"
 edition = "2024"
 
 [[bin]]
-name = "driver"
+name = "firmware"
 path = "src/main.rs"
 test = false
 doctest = false
 bench = false
 
 [dependencies]
-# Embedded stuff
-seeeduino-xiao-rp2040 = "0.6.0"
-panic-halt = "1.0.0"
-cortex-m-rt = "0.7"
-cortex-m = "0.7.6"
-embedded-hal = "1.0.0"
+# embassy base
+embassy-sync = "0.7.2"
+embassy-executor = { version = "0.9.1", features = ["arch-cortex-m", "executor-thread"] }
+embassy-time = "0.5.0"
+embassy-rp = { version = "0.9.0", features = ["rp2040", "critical-section-impl"] }
+
+# embedded runtime
+cortex-m = { version = "0.7.7", features = ["inline-asm"] }
+cortex-m-rt = "0.7.5"
+critical-section = "1.2"
 embedded-alloc = "0.6.0"
 
-# LEDS
+#Usb
+embassy-usb = "0.5.1"
+embassy-usb-logger = "0.5.1"
+
+# Leds
 ws2812-pio = "=0.8.0" #version must be 0.8.0 else it is incompatible to seeeduino-xiao-rp2040
 smart-leds = "=0.3.0"
 smart-leds-trait = "=0.2.1"
-
-# USB
-usbd-human-interface-device = "0.6.0"
-usb-device = "0.3"
-frunk = "0.4.4"
-usbd-webusb = {git = "https://github.com/SillyGoose123/usbd-webusb"}
 
 # To create frontend types
 ts-bind = {git = "https://github.com/SillyGoose123/ts-bind-no-std"}

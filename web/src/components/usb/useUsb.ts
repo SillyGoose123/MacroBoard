@@ -20,7 +20,6 @@ export const useUsb = () => {
       return;
     }
 
-    de
 
 
     setIsLoading(false);
