@@ -1,0 +1,2 @@
+ts_code_gen_path="../web"
+default_case = "CamelCase"

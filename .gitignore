@@ -1,2 +1,4 @@
-/firmware/target/
 .idea
+
+/firmware/target/
+/web/node_modules

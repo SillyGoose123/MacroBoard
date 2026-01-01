@@ -32,6 +32,7 @@ use seeeduino_xiao_rp2040::hal::{Clock, Sio};
 use seeeduino_xiao_rp2040::{entry, hal, pac};
 use usb_device::class_prelude::UsbBusAllocator;
 use ws2812_pio::Ws2812Direct;
+use crate::usb::web::Web;
 
 #[global_allocator]
 static ALLOCATOR: Heap = Heap::empty();
@@ -82,6 +83,7 @@ fn main() -> ! {
         &mut pac.RESETS,
     ));
     let mut hid = HID::init(&usb_alloc, &timer);
+    let mut web = Web::init(&usb_alloc, &timer);
 
     //init components
     let mut switches = Switches::init(

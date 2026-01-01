@@ -1,2 +1,2 @@
 pub mod knob;
-mod knob_action;
+pub mod knob_action;

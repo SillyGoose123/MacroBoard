@@ -1,8 +1,9 @@
 use crate::def_enum;
 use alloc::vec::Vec;
 use smart_leds::{RGB8, colors};
+use ts_bind::TsBind;
 
-#[derive(Eq, PartialEq)]
+#[derive(TsBind, Eq, PartialEq)]
 pub struct Effect {
     colors: Vec<RGB8>,
     time_diff: u32, //in milliseconds,
