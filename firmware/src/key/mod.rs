@@ -1,2 +1,2 @@
-pub mod switches_driver;
+pub mod switches;
 pub mod key_action;

@@ -14,6 +14,8 @@ const PRODUCT: &'static str = "MacroBoard";
 const SERIAL_NUMBER: &'static str = "v1";
 //https://pid.codes test id
 #[ts_bind_const]
-const USB_VID: u16   = 0x1209;
-#[ts_bind_const(rename = "kebab_case")]
+const USB_VID: u16 = 0x1209;
+#[ts_bind_const]
 const USB_PID: u16  = 0x0001;
+// This is a randomly generated GUID to allow clients on Windows to find our device
+const DEVICE_INTERFACE_GUIDS: &[&str] = &["{AFB9A6FB-30BA-44BC-9232-806CFC875321}"];

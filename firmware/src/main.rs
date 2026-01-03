@@ -13,7 +13,7 @@ mod usb;
 
 use crate::config::Config;
 use crate::driver_trait::Driver;
-use crate::key::switches_driver::SwitchesDriver;
+use crate::key::switches::SwitchesDriver;
 use crate::knob::knob_driver::KnobDriver;
 use crate::summer::summer_driver::SummerDriver;
 use crate::usb::usb_driver::UsbDriver;
@@ -37,16 +37,11 @@ async fn main(spawner: Spawner) {
     //init
     let rp = embassy_rp::init(Default::default());
     let config = Config::load();
-    let _usb = UsbDriver::init(spawner, &config, rp.USB);
-    let _switches = SwitchesDriver::init(spawner.clone(), &config, String::new());
-    let _knob = KnobDriver::init(spawner.clone(), &config, String::new());
-    let _summer = SummerDriver::init(spawner.clone(), &config, String::new());
-}
 
+    loop {}
+}
 
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
-  loop {
-
-  }
+    loop {}
 }

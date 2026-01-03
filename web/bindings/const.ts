@@ -6,3 +6,4 @@ const product: string = "MacroBoard";
 const serialNumber: string = "v1";
 const usbVid: number = 0x1209;
 const usb_pid: number = 0x0001;
+const usbPid: number = 0x0001;
