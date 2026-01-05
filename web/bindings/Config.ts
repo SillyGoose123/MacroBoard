@@ -2,9 +2,11 @@
 
 import type { KnobAction } from "./KnobAction";
 import type { KeyAction } from "./KeyAction";
+import type { Effect } from "./Effect";
 
 export interface Config {
    keyAction: [(KeyAction)[], (KeyAction)[], (KeyAction)[], (KeyAction)[], (KeyAction)[], (KeyAction)[]];
    knobAction: KnobAction;
    inputDelay: number;
+   effect: Effect;
 }

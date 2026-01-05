@@ -1,11 +1,12 @@
 use ts_bind::ts_bind_const;
 
-mod hid;
-mod web;
-pub mod usb_driver;
+pub mod usb;
+mod web_usb;
+mod hid_key;
+mod hid_mouse;
 
 #[ts_bind_const]
-const WEB_URL: &str = "macro.sillycode.tech";
+const  WEB_URL: &str = "macro.sillycode.tech";
 #[ts_bind_const]
 const MANUFACTURER: &'static str = "SillGoose123 & Leo";
 #[ts_bind_const]

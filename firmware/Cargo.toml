@@ -15,22 +15,21 @@ bench = false
 embassy-sync = "0.7.2"
 embassy-executor = { version = "0.9.1", features = ["arch-cortex-m", "executor-thread"] }
 embassy-time = "0.5.0"
-embassy-rp = { version = "0.9.0", features = ["rp2040", "critical-section-impl"] }
+embassy-rp = { version = "0.9.0", features = ["rp2040", "critical-section-impl", "time-driver"] }
 
 # embedded runtime
 cortex-m = { version = "0.7.7", features = ["inline-asm"] }
 cortex-m-rt = "0.7.5"
 critical-section = "1.2"
-embedded-alloc = "0.6.0"
+embedded-alloc = "0.7.0"
 
 #Usb
 embassy-usb = "0.5.1"
 embassy-usb-logger = "0.5.1"
+usbd-hid = "=0.8.2" # This version is required to be compatible with embassy-usb
 
 # Leds
-ws2812-pio = "=0.8.0" #version must be 0.8.0 else it is incompatible to seeeduino-xiao-rp2040
-smart-leds = "=0.3.0"
-smart-leds-trait = "=0.2.1"
+smart-leds = "0.4"
 
 # To create frontend types
-ts-bind = {git = "https://github.com/SillyGoose123/ts-bind-no-std"}
+ts-bind = { git = "https://github.com/SillyGoose123/ts-bind-no-std" }

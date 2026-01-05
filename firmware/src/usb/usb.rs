@@ -1,0 +1,60 @@
+use embassy_executor::Spawner;
+use embassy_rp::peripherals::USB;
+use embassy_rp::{Peri, bind_interrupts};
+use embassy_usb::msos::windows_version;
+use embassy_usb::{Builder, Config, UsbDevice};
+
+use crate::mk_static;
+use crate::usb::hid_key::init_hid_key;
+use crate::usb::web_usb::init_web;
+use crate::usb::{MANUFACTURER, PRODUCT, SERIAL_NUMBER};
+use embassy_rp::usb::{Driver as UsbDriver, Driver, InterruptHandler};
+use crate::usb::hid_mouse::init_hid_mouse;
+
+bind_interrupts!(struct Irqs {
+    USBCTRL_IRQ => InterruptHandler<USB>;
+});
+
+pub fn init_usb(spawner: Spawner, usb: Peri<'static, USB>) {
+    let driver = UsbDriver::new(usb, Irqs);
+
+    let mut config = Config::new(0xf569, 0x0001);
+    config.manufacturer = Some(MANUFACTURER);
+    config.product = Some(PRODUCT);
+    config.serial_number = Some(SERIAL_NUMBER);
+    config.max_power = 100;
+    config.max_packet_size_0 = 64;
+
+    mk_static!(config_descriptor_buf: mut [u8; 256] = [0u8; 256]);
+    mk_static!(bos_descriptor_buf: mut [u8; 256] = [0u8; 256]);
+    mk_static!(msos_descriptor_buf: mut [u8; 256] = [0u8; 256]);
+    mk_static!(control_buf: mut [u8; 256] = [0u8; 256]);
+
+    let mut builder = Builder::new(
+        driver,
+        config,
+        config_descriptor_buf,
+        bos_descriptor_buf,
+        msos_descriptor_buf,
+        control_buf,
+    );
+
+    builder.msos_descriptor(windows_version::WIN8_1, 0);
+    builder.msos_writer().configuration(0);
+
+    init_web(spawner, &mut builder);
+    init_hid_key(spawner, &mut builder);
+    init_hid_mouse(spawner, &mut builder);
+
+    /* RUN USB */
+    let usb = builder.build();
+
+    spawner
+        .spawn(usb_task(usb))
+        .expect("Failed to spawn USB task");
+}
+
+#[embassy_executor::task]
+async fn usb_task(mut usb: UsbDevice<'static, Driver<'static, USB>>) {
+    usb.run().await;
+}

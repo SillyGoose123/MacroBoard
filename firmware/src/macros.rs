@@ -6,9 +6,8 @@ macro_rules! count_variants {
     (@sub $x:ident) => { () };
 }
 
-
 #[macro_export]
-macro_rules! def_enum {
+macro_rules! def_enum_all {
     (
         $(#[$attr:meta])*
         $vis:vis $name:ident => $ty:ty {
@@ -35,4 +34,42 @@ macro_rules! def_enum {
           ];
         }
     }
+}
+
+#[macro_export]
+macro_rules! mk_static {
+    // mutable version
+    ($name:ident : mut $type:ty = $value:expr) => {
+        let $name: &'static mut $type = alloc::boxed::Box::leak(alloc::boxed::Box::new($value));
+    };
+    // immutable version
+    ($name:ident : $type:ty = $value:expr) => {
+        let $name: &'static $type = alloc::boxed::Box::leak(alloc::boxed::Box::new($value));
+    };
+}
+
+#[macro_export]
+macro_rules! byte_enum {
+  (
+    $vis:vis enum $name:ident {
+    $($variant:ident = $val:expr),+
+  }) => {
+    use core::result::Result;
+    use core::result::Result::{Ok, Err};
+
+    #[repr(u8)]
+    #[derive(TsBind)]
+    $vis enum $name {
+      $($variant),+
+    }
+
+    impl $name {
+      fn from_bytes(data: u8) -> Result<Self, ()> {
+        match data {
+          $($val => Ok(Self::$variant)),+,
+          _=> Err(())
+        }
+      }
+    }
   }
+}
