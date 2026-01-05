@@ -13,9 +13,7 @@ The driver and the web page for configuring talk to each other via web usb.
 [seeed studio RP2040](https://wiki.seeedstudio.com/XIAO-RP2040/)
 
 
-[https://github.com/rp-rs/rp-hal-boards/tree/main/boards/seeeduino-xiao-rp2040](https://github.com/rp-rs/rp-hal-boards/tree/main/boards/seeeduino-xiao-rp2040)
-
-[https://crates.io/crates/embedded-hal](https://crates.io/crates/embedded-hal) [https://crates.io/crates/rp2040-hal](https://crates.io/crates/rp2040-hal) [https://github.com/rp-rs/rp-hal](https://github.com/rp-rs/rp-hal) [https://github.com/rp-rs/rp2040-project-template](https://github.com/rp-rs/rp2040-project-template)
+[https://crates.io/crates/embedded-hal](https://crates.io/crates/embedded-hal) [https://crates.io/crates/rp2040-hal](https://crates.io/crates/rp2040-hal)
 
 ### Requirements
 

@@ -1,19 +1,24 @@
 use crate::bytes_trait::BytesConvert;
+use crate::config::Config;
 use crate::led::Flash;
 use crate::summer::tones::Tone;
 use crate::usb::{DEVICE_INTERFACE_GUIDS, WEB_URL};
-use crate::{FLASH_CHANNEL, SUMMER_CHANNEL, byte_enum, mk_static, parse_bytes};
+use crate::{CONFIG, FLASH_CHANNEL, SUMMER_CHANNEL, byte_enum, mk_static, parse_bytes};
+use alloc::vec;
+use alloc::vec::Vec;
 use embassy_executor::{Spawner, task};
 use embassy_rp::peripherals::USB;
 use embassy_rp::usb::{Driver, Endpoint as UsbEndpoint, In, Out};
 use embassy_usb::class::web_usb::{Config as WebUsbConfig, State as WebState, Url, WebUsb};
-use embassy_usb::driver::{Endpoint, EndpointOut};
+use embassy_usb::driver::{Endpoint, EndpointIn, EndpointOut};
 use embassy_usb::{Builder, msos};
-use smart_leds::RGB8;
 use ts_bind::TsBind;
 
 // Add custom usb class
-pub fn init_web(spawner: Spawner, mut builder: &mut Builder<'static, Driver<'static, USB>>) {
+pub fn init_web(
+    spawner: Spawner,
+    mut builder: &mut Builder<'static, Driver<'static, USB>>,
+) {
     mk_static!(web_state: mut WebState = WebState::new());
     mk_static!(webusb_config: WebUsbConfig = WebUsbConfig {
       max_packet_size: 64,
@@ -41,7 +46,7 @@ pub fn init_web(spawner: Spawner, mut builder: &mut Builder<'static, Driver<'sta
 #[task]
 async fn web_usb_task(
     mut read_ep: UsbEndpoint<'static, USB, Out>,
-    _write_ep: UsbEndpoint<'static, USB, In>,
+    mut write_ep: UsbEndpoint<'static, USB, In>,
 ) {
     loop {
         read_ep.wait_enabled().await;
@@ -57,7 +62,15 @@ async fn web_usb_task(
                 continue;
             }
 
-            command.unwrap().execute(&data[1..]).await;
+            let _ = write_ep
+                .write(
+                    command
+                        .unwrap()
+                        .execute(data.get(1..).unwrap_or(&[0]))
+                        .await
+                        .as_slice(),
+                )
+                .await;
         }
     }
 }
@@ -72,18 +85,30 @@ byte_enum!(
 );
 
 impl Command {
-    async fn execute(self, data: &[u8]) {
+    async fn execute(self, data: &[u8]) -> Vec<u8> {
         match self {
             Command::Flash => {
-                FLASH_CHANNEL
-                    .send(parse_bytes!(Flash, data))
-                    .await;
+                FLASH_CHANNEL.send(parse_bytes!(Flash, data)).await;
+                vec![0]
             }
             Command::Summ => {
                 SUMMER_CHANNEL.send(parse_bytes!(Tone, data)).await;
+                vec![0]
             }
-            Command::ChangeConfig => {}
-            Command::GetConfig => {}
+            Command::ChangeConfig => {
+                let mut guard = CONFIG.lock().await;
+                *guard = Some(parse_bytes!(Config, data));
+                match guard.as_mut().unwrap().store().await {
+                    Ok(_) => vec![0],
+                    Err(_) => vec![1],
+                }
+            }
+            Command::GetConfig => {
+                let guard = CONFIG.lock().await;
+                let mut bytes = vec![0];
+                bytes.append(guard.as_ref().unwrap().to_bytes().as_mut());
+                bytes
+            }
         }
     }
 }

@@ -2,28 +2,31 @@ use embassy_executor::Spawner;
 use embassy_rp::peripherals::USB;
 use embassy_rp::{Peri, bind_interrupts};
 use embassy_usb::msos::windows_version;
-use embassy_usb::{Builder, Config, UsbDevice};
+use embassy_usb::{Builder, Config as UsbConfig, UsbDevice};
 
 use crate::mk_static;
 use crate::usb::hid_key::init_hid_key;
+use crate::usb::hid_mouse::init_hid_mouse;
 use crate::usb::web_usb::init_web;
 use crate::usb::{MANUFACTURER, PRODUCT, SERIAL_NUMBER};
 use embassy_rp::usb::{Driver as UsbDriver, Driver, InterruptHandler};
-use crate::usb::hid_mouse::init_hid_mouse;
 
 bind_interrupts!(struct Irqs {
     USBCTRL_IRQ => InterruptHandler<USB>;
 });
 
-pub fn init_usb(spawner: Spawner, usb: Peri<'static, USB>) {
+pub fn init_usb(
+    spawner: Spawner,
+    usb: Peri<'static, USB>,
+) {
     let driver = UsbDriver::new(usb, Irqs);
 
-    let mut config = Config::new(0xf569, 0x0001);
-    config.manufacturer = Some(MANUFACTURER);
-    config.product = Some(PRODUCT);
-    config.serial_number = Some(SERIAL_NUMBER);
-    config.max_power = 100;
-    config.max_packet_size_0 = 64;
+    let mut usb_cfg = UsbConfig::new(0xf569, 0x0001);
+    usb_cfg.manufacturer = Some(MANUFACTURER);
+    usb_cfg.product = Some(PRODUCT);
+    usb_cfg.serial_number = Some(SERIAL_NUMBER);
+    usb_cfg.max_power = 100;
+    usb_cfg.max_packet_size_0 = 64;
 
     mk_static!(config_descriptor_buf: mut [u8; 256] = [0u8; 256]);
     mk_static!(bos_descriptor_buf: mut [u8; 256] = [0u8; 256]);
@@ -32,7 +35,7 @@ pub fn init_usb(spawner: Spawner, usb: Peri<'static, USB>) {
 
     let mut builder = Builder::new(
         driver,
-        config,
+        usb_cfg,
         config_descriptor_buf,
         bos_descriptor_buf,
         msos_descriptor_buf,

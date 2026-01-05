@@ -2,8 +2,9 @@ use crate::bytes_trait::BytesConvert;
 use crate::key::key_action::Action;
 use crate::knob::knob_action::{KnobAction, RotaryAction};
 use crate::led::Effect;
-use alloc::vec;
+use crate::{STORAGE, parse_bytes};
 use alloc::vec::Vec;
+use embassy_rp::flash::Error;
 use ts_bind::TsBind;
 
 #[derive(TsBind, Default)]
@@ -14,26 +15,25 @@ pub struct Config {
 }
 
 impl Config {
-    pub(crate) fn load() -> Self {
-        Self {
-            switch_action: [vec![], vec![], vec![], vec![], vec![], vec![]],
-            knob_action: KnobAction {
-                switch: vec![],
-                rotary_action: RotaryAction {
-                    plus: vec![],
-                    minus: vec![],
-                },
-            },
-            effect: Effect {
-                colors: vec![],
-                time_diff: 0,
-            },
+    pub(crate) async fn load() -> Self {
+        let mut storage = STORAGE.lock().await;
+        if let Ok(bytes) = storage.as_mut().unwrap().read().await {
+            return parse_bytes!(Config, bytes.as_slice());
         }
+
+        Default::default()
     }
 
-    pub(crate) fn store(&self) {}
+    // Is blocking
+    pub(crate) async fn store(&self) -> Result<(), Error> {
+        let mut storage = STORAGE.lock().await;
+        storage
+            .as_mut()
+            .unwrap()
+            .write(self.to_bytes().as_slice())?;
+        Ok(())
+    }
 }
-//https://crates.io/crates/eeprom24x
 
 impl BytesConvert for Config {
     fn from_bytes(bytes: &[u8], pointer: &mut usize) -> Self {

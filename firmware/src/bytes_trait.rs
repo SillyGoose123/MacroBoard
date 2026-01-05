@@ -82,7 +82,7 @@ macro_rules! get_byte {
 
 #[macro_export]
 macro_rules! parse_bytes {
-    ($name:ident, $value:ident) => {
+    ($name:ident, $value:expr) => {
         || -> $name {
             let mut pointer = 0;
             $name::from_bytes($value, &mut pointer)
