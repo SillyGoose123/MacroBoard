@@ -1,5 +1,6 @@
-use alloc::vec::Vec;
 use crate::bytes_trait::BytesConvert;
+use crate::get_byte;
+use alloc::vec::Vec;
 use ts_bind::TsBind;
 
 #[derive(TsBind, Copy, Clone)]
@@ -22,8 +23,8 @@ impl Tone {
 }
 
 impl BytesConvert for Tone {
-    fn from_bytes(bytes: &[u8]) -> Self {
-        match bytes.get(0).unwrap_or(&0) {
+    fn from_bytes(bytes: &[u8], pointer: &mut usize) -> Self {
+        match get_byte!(bytes, pointer) {
             1 => Tone::LOW,
             2 => Tone::MEDIUM,
             3 => Tone::HIGH,

@@ -8,7 +8,7 @@ async fn switch_check(index: usize, mut input: Input<'static>) {
     loop {
         input.wait_for_high().await;
         let cfg = CONFIG.lock().await;
-        execute_actions(&cfg.as_ref().unwrap().key_action[index]).await;
+        execute_actions(&cfg.as_ref().unwrap().switch_action[index]).await;
     }
 }
 

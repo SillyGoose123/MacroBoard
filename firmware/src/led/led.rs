@@ -9,7 +9,7 @@ use embassy_time::{Duration, Ticker, Timer};
 pub async fn effect_task(mut ws2812: PioWs2812<'static, PIO0, 0, NUM_LEDS, Grb>) {
     let mut ticker = Ticker::every(Duration::from_millis(1));
     let mut ticks: u32 = 0;
-    let index: u32 = 0;
+    let mut index: u32 = 0;
 
     loop {
         if let Ok(flash) = FLASH_CHANNEL.try_receive() {
@@ -18,7 +18,7 @@ pub async fn effect_task(mut ws2812: PioWs2812<'static, PIO0, 0, NUM_LEDS, Grb>)
             FLASH_CHANNEL.clear();
         }
         let mut cfg = CONFIG.lock().await;
-        let data = cfg.as_mut().unwrap().effect.tick(ticks, index);
+        let data = cfg.as_mut().unwrap().effect.tick(&mut ticks, &mut index);
         ws2812.write(&data).await;
 
         ticks += 1;

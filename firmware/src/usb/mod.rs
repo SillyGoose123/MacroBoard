@@ -4,6 +4,7 @@ pub mod usb;
 mod web_usb;
 mod hid_key;
 mod hid_mouse;
+mod macros;
 
 #[ts_bind_const]
 const  WEB_URL: &str = "macro.sillycode.tech";
