@@ -13,10 +13,6 @@ pub struct Effect {
 }
 
 impl Effect {
-    pub(crate) const fn new(colors: Vec<RGB8>, time_diff: u32) -> Self {
-        Self { colors, time_diff }
-    }
-
     pub fn tick(&mut self, ticks: &mut u32, index: &mut u32) -> [RGB8; 5] {
         if *ticks > self.time_diff {
             *ticks = 0;

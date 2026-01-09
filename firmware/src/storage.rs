@@ -4,7 +4,7 @@ use crate::bytes_trait::BytesConvert;
 use alloc::vec;
 use alloc::vec::Vec;
 use embassy_rp::Peri;
-use embassy_rp::dma::{Channel, Transfer};
+use embassy_rp::dma::Channel;
 use embassy_rp::flash::{Async, Error, Flash};
 use embassy_rp::peripherals::FLASH;
 

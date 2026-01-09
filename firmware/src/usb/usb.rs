@@ -8,20 +8,17 @@ use crate::mk_static;
 use crate::usb::hid_key::init_hid_key;
 use crate::usb::hid_mouse::init_hid_mouse;
 use crate::usb::web_usb::init_web;
-use crate::usb::{MANUFACTURER, PRODUCT, SERIAL_NUMBER};
+use crate::usb::{MANUFACTURER, PRODUCT, SERIAL_NUMBER, USB_PID, USB_VID};
 use embassy_rp::usb::{Driver as UsbDriver, Driver, InterruptHandler};
 
 bind_interrupts!(struct Irqs {
     USBCTRL_IRQ => InterruptHandler<USB>;
 });
 
-pub fn init_usb(
-    spawner: Spawner,
-    usb: Peri<'static, USB>,
-) {
+pub fn init_usb(spawner: Spawner, usb: Peri<'static, USB>) {
     let driver = UsbDriver::new(usb, Irqs);
 
-    let mut usb_cfg = UsbConfig::new(0xf569, 0x0001);
+    let mut usb_cfg = UsbConfig::new(USB_VID, USB_PID);
     usb_cfg.manufacturer = Some(MANUFACTURER);
     usb_cfg.product = Some(PRODUCT);
     usb_cfg.serial_number = Some(SERIAL_NUMBER);

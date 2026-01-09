@@ -24,6 +24,7 @@ use crate::summer::tones::Tone;
 use crate::usb::usb::init_usb;
 use embassy_executor::Spawner;
 use embassy_rp::bind_interrupts;
+use embassy_rp::clocks::ClockConfig;
 use embassy_rp::gpio::{Input, Pull};
 use embassy_rp::peripherals::PIO0;
 use embassy_rp::pio::{InterruptHandler, Pio};
@@ -34,6 +35,9 @@ use embassy_sync::channel::Channel;
 use embassy_sync::mutex::Mutex;
 use embedded_alloc::LlffHeap as Heap;
 use usbd_hid::descriptor::MouseReport;
+
+#[allow(unused_imports)]
+use {critical_section as _, defmt_rtt as _, panic_probe as _};
 
 bind_interrupts!(struct Irqs {
     PIO0_IRQ_0 => InterruptHandler<PIO0>;
@@ -51,16 +55,18 @@ static ALLOCATOR: Heap = Heap::empty();
 
 #[embassy_executor::main]
 async fn main(spawner: Spawner) {
+    let mut config: embassy_rp::config::Config = Default::default();
+    config.clocks = ClockConfig::crystal(12_000_000);
+    //init
+    let rp = embassy_rp::init(config);
+
     // Initialize the allocator BEFORE you use it
     {
         use core::mem::MaybeUninit;
-        const HEAP_SIZE: usize = 1024;
+        const HEAP_SIZE: usize = 50 * 1024;
         static mut HEAP: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZE];
         unsafe { ALLOCATOR.init(core::ptr::addr_of_mut!(HEAP) as usize, HEAP_SIZE) }
     }
-
-    //init
-    let rp = embassy_rp::init(Default::default());
 
     //storage
     let storage = Storage::init(rp.FLASH, rp.DMA_CH0);
@@ -75,12 +81,12 @@ async fn main(spawner: Spawner) {
     init_switches(
         spawner,
         [
-            Input::new(rp.PIN_3, Pull::Down),
-            Input::new(rp.PIN_4, Pull::Down),
-            Input::new(rp.PIN_2, Pull::Down),
-            Input::new(rp.PIN_1, Pull::Down),
-            Input::new(rp.PIN_0, Pull::Down),
-            Input::new(rp.PIN_29, Pull::Down),
+            Input::new(rp.PIN_3, Pull::None),
+            Input::new(rp.PIN_4, Pull::None),
+            Input::new(rp.PIN_2, Pull::None),
+            Input::new(rp.PIN_1, Pull::None),
+            Input::new(rp.PIN_0, Pull::None),
+            Input::new(rp.PIN_29, Pull::None),
         ],
     );
 
@@ -110,10 +116,5 @@ async fn main(spawner: Spawner) {
 
     init_usb(spawner.clone(), rp.USB);
 
-    loop {}
-}
-
-#[panic_handler]
-fn panic(_info: &core::panic::PanicInfo) -> ! {
     loop {}
 }
