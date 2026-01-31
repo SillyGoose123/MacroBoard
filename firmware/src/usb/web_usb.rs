@@ -15,10 +15,7 @@ use embassy_usb::{Builder, msos};
 use ts_bind::TsBind;
 
 // Add custom usb class
-pub fn init_web(
-    spawner: Spawner,
-    mut builder: &mut Builder<'static, Driver<'static, USB>>,
-) {
+pub fn init_web(spawner: Spawner, mut builder: &mut Builder<'static, Driver<'static, USB>>) {
     mk_static!(web_state: mut WebState = WebState::new());
     mk_static!(webusb_config: WebUsbConfig = WebUsbConfig {
       max_packet_size: 64,
@@ -29,15 +26,16 @@ pub fn init_web(
 
     // build & create interface
     builder.msos_feature(msos::CompatibleIdFeatureDescriptor::new("WINUSB", ""));
-    let mut function = builder.function(0xFF, 0x0D, 0x0A); //vendor specific usb class
+    let mut function = builder.function(0xFF, 0x00, 0x00); //vendor specific usb class
     function.msos_feature(msos::RegistryPropertyFeatureDescriptor::new(
         "DeviceInterfaceGUIDs",
         msos::PropertyData::RegMultiSz(DEVICE_INTERFACE_GUIDS),
     ));
     let mut interface = function.interface();
-    let mut alt = interface.alt_setting(0xFF, 0x0D, 0x0A, None);
+    let mut alt = interface.alt_setting(0xFF, 0x00, 0x00, None);
     let read_ep = alt.endpoint_bulk_out(None, 64);
     let write_ep = alt.endpoint_bulk_in(None, 64);
+
     spawner
         .spawn(web_usb_task(read_ep, write_ep))
         .expect("Failed to spawn web usb task");

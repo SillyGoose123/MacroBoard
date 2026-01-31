@@ -9,11 +9,12 @@ use usbd_hid::descriptor::{KeyboardReport, SerializedDescriptor};
 
 pub fn init_hid_key(spawner: Spawner, mut builder: &mut Builder<'static, Driver<'static, USB>>) {
   mk_static!(hid_state: mut HidState = HidState::new());
+  
   let config = embassy_usb::class::hid::Config {
     report_descriptor: KeyboardReport::desc(),
     request_handler: None,
-    poll_ms: 60,
-    max_packet_size: 64,
+    poll_ms: 10,
+    max_packet_size: 8,
   };
   let hid = HidReaderWriter::<_, 1, 8>::new(&mut builder, hid_state, config);
   spawner

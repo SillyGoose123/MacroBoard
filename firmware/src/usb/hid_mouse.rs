@@ -11,8 +11,8 @@ pub fn init_hid_mouse(spawner: Spawner, mut builder: &mut Builder<'static, Drive
     let config = embassy_usb::class::hid::Config {
         report_descriptor: MouseReport::desc(),
         request_handler: None,
-        poll_ms: 60,
-        max_packet_size: 64,
+        poll_ms: 10,
+        max_packet_size: 8,
     };
     let hid = HidReaderWriter::<_, 1, 8>::new(&mut builder, hid_state, config);
     spawner.spawn(hid_mouse_task(hid)).expect("Failed to spawn hid mouse task.")
@@ -27,6 +27,6 @@ async fn hid_mouse_task(hid: HidReaderWriter<'static, Driver<'static, USB>, 1, 8
         writer
             .write_serialize(&report)
             .await
-            .expect("Writing Keyboard report fails.");
+            .expect("Writing Mouse report fails.");
     }
 }

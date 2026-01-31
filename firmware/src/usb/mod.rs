@@ -7,7 +7,7 @@ mod hid_mouse;
 mod macros;
 
 #[ts_bind_const]
-const  WEB_URL: &str = "macro.sillycode.tech";
+const  WEB_URL: &str = "https://macro.sillycode.tech";
 #[ts_bind_const]
 const MANUFACTURER: &'static str = "SillGoose123 & Leo";
 #[ts_bind_const]
@@ -18,6 +18,6 @@ const SERIAL_NUMBER: &'static str = "v1";
 #[ts_bind_const]
 const USB_VID: u16 = 0x1209;
 #[ts_bind_const]
-const USB_PID: u16  = 0x0001;
+const USB_PID: u16  = 0x0512;
 // This is a randomly generated GUID to allow clients on Windows to find our device
-const DEVICE_INTERFACE_GUIDS: &[&str] = &["{AFB9A6FB-30BA-44BC-9232-806CFC875321}"];
+const DEVICE_INTERFACE_GUIDS: &[&str] = &["{2c8e1090-8c5a-4ba5-a0cc-a01514a3c145}"];

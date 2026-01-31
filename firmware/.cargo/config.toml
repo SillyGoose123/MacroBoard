@@ -10,7 +10,6 @@ linker = "flip-link"
 
 # use appropriate memory layout
 rustflags = [
-  "-C", "link-arg=--nmagic",
   "-C", "link-arg=-Tlink.x",
   "-C", "link-arg=-Tdefmt.x",
   "-C", "no-vectorize-loops",
@@ -18,5 +17,4 @@ rustflags = [
 
 # run cargo clean after changing
 [env]
-DEFMT_LOG = "error"
-DEFMT_RTT_BUFFER_SIZE = "1024"
+DEFMT_LOG = "trace"

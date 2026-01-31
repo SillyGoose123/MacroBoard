@@ -22,9 +22,9 @@ use crate::storage::Storage;
 use crate::summer::summer::summer_handler;
 use crate::summer::tones::Tone;
 use crate::usb::usb::init_usb;
+use defmt::info;
 use embassy_executor::Spawner;
 use embassy_rp::bind_interrupts;
-use embassy_rp::clocks::ClockConfig;
 use embassy_rp::gpio::{Input, Pull};
 use embassy_rp::peripherals::PIO0;
 use embassy_rp::pio::{InterruptHandler, Pio};
@@ -55,10 +55,8 @@ static ALLOCATOR: Heap = Heap::empty();
 
 #[embassy_executor::main]
 async fn main(spawner: Spawner) {
-    let mut config: embassy_rp::config::Config = Default::default();
-    config.clocks = ClockConfig::crystal(12_000_000);
     //init
-    let rp = embassy_rp::init(config);
+    let rp = embassy_rp::init(Default::default());
 
     // Initialize the allocator BEFORE you use it
     {
@@ -68,15 +66,22 @@ async fn main(spawner: Spawner) {
         unsafe { ALLOCATOR.init(core::ptr::addr_of_mut!(HEAP) as usize, HEAP_SIZE) }
     }
 
-    //storage
-    let storage = Storage::init(rp.FLASH, rp.DMA_CH0);
-    let mut guard = STORAGE.lock().await;
-    *guard = Some(storage);
+    // They're in scopes because else the guard keeps the lock forever
+    {
+        //storage
+        let storage = Storage::init(rp.FLASH, rp.DMA_CH0);
+        let mut guard = STORAGE.lock().await;
+        *guard = Some(storage);
+        info!("Init storage!");
+    }
 
-    //config
-    let config = Config::load().await;
-    let mut guard = CONFIG.lock().await;
-    *guard = Some(config);
+    {
+        //config
+        let config = Config::load().await;
+        let mut guard = CONFIG.lock().await;
+        *guard = Some(config);
+        info!("Init config!");
+    }
 
     init_switches(
         spawner,
@@ -89,6 +94,7 @@ async fn main(spawner: Spawner) {
             Input::new(rp.PIN_29, Pull::None),
         ],
     );
+    info!("Init switches!");
 
     init_knob(
         spawner,
@@ -98,6 +104,7 @@ async fn main(spawner: Spawner) {
             Input::new(rp.PIN_28, Pull::Up),
         ],
     );
+    info!("Init knob!");
 
     let Pio {
         mut common, sm0, ..
@@ -107,14 +114,15 @@ async fn main(spawner: Spawner) {
     spawner
         .spawn(effect_task(ws2812))
         .expect("Failed to init leds.");
+    info!("Init leds!");
 
     let summer_conf = PWMConfig::default();
     let pwm = Pwm::new_output_b(rp.PWM_SLICE3, rp.PIN_7, summer_conf);
     spawner
         .spawn(summer_handler(pwm))
         .expect("Failed to init summer.");
+    info!("Init summer!");
 
-    init_usb(spawner.clone(), rp.USB);
-
-    loop {}
+    init_usb(spawner, rp.USB);
+    info!("Init usb!");
 }

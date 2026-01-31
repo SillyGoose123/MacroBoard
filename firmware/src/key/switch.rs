@@ -3,7 +3,7 @@ use crate::key::key_action::execute_actions;
 use embassy_executor::{Spawner, task};
 use embassy_rp::gpio::Input;
 
-#[task]
+#[task(pool_size = 6)]
 async fn switch_check(index: usize, mut input: Input<'static>) {
     loop {
         input.wait_for_high().await;
