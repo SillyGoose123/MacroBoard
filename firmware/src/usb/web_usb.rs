@@ -12,6 +12,7 @@ use embassy_rp::usb::{Driver, Endpoint as UsbEndpoint, In, Out};
 use embassy_usb::class::web_usb::{Config as WebUsbConfig, State as WebState, Url, WebUsb};
 use embassy_usb::driver::{Endpoint, EndpointIn, EndpointOut};
 use embassy_usb::{Builder, msos};
+use embassy_usb::msos::windows_version;
 use ts_bind::TsBind;
 
 // Add custom usb class
@@ -25,6 +26,7 @@ pub fn init_web(spawner: Spawner, mut builder: &mut Builder<'static, Driver<'sta
     WebUsb::configure(&mut builder, web_state, &webusb_config);
 
     // build & create interface
+    builder.msos_descriptor(windows_version::WIN8_1, 1);
     builder.msos_feature(msos::CompatibleIdFeatureDescriptor::new("WINUSB", ""));
     let mut function = builder.function(0xFF, 0x00, 0x00); //vendor specific usb class
     function.msos_feature(msos::RegistryPropertyFeatureDescriptor::new(
