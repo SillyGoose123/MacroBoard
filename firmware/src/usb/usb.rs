@@ -46,9 +46,8 @@ pub fn init_usb(spawner: Spawner, usb: Peri<'static, USB>) {
     init_hid_mouse(spawner, &mut builder);
     init_web(spawner, &mut builder);
 
-    /* RUN USB */
+    // RUN USB
     let usb = builder.build();
-
     spawner
         .spawn(usb_task(usb))
         .expect("Failed to spawn USB task");
