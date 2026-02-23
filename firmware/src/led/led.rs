@@ -17,8 +17,16 @@ pub async fn effect_task(mut ws2812: PioWs2812<'static, PIO0, 0, NUM_LEDS, Grb>)
             Timer::after(Duration::from_millis(flash.duration as u64)).await;
             FLASH_CHANNEL.clear();
         }
-        let mut cfg = CONFIG.lock().await;
-        let data = cfg.as_mut().unwrap().effect.tick(&mut ticks, &mut index);
+        let effect = {
+            CONFIG
+                .lock()
+                .await
+                .as_ref()
+                .expect("Config not initialised at effect task!")
+                .effect
+                .clone()
+        };
+        let data = effect.tick(&mut ticks, &mut index);
         ws2812.write(&data).await;
 
         ticks += 1;

@@ -23,10 +23,10 @@ pub fn init_usb(spawner: Spawner, usb: Peri<'static, USB>) {
     usb_cfg.serial_number = Some(SERIAL_NUMBER);
     usb_cfg.max_power = 100;
     usb_cfg.max_packet_size_0 = 64;
-    usb_cfg.device_class = 0xEF;
-    usb_cfg.device_sub_class = 0x02;
-    usb_cfg.device_protocol = 0x01;
-    usb_cfg.composite_with_iads = true;
+    usb_cfg.device_class = 0x00;
+    usb_cfg.device_sub_class = 0;
+    usb_cfg.device_protocol = 0;
+    usb_cfg.composite_with_iads = false;
 
     mk_static!(config_descriptor_buf: mut [u8; 512] = [0u8; 512]);
     mk_static!(bos_descriptor_buf: mut [u8; 256] = [0u8; 256]);

@@ -37,11 +37,12 @@ embedded-alloc = "0.7.0"
 
 
 # Usb
-embassy-usb = "0.5.1"
+embassy-usb = { version = "0.5.1", features = ["defmt"] }
 usbd-hid = "=0.8.2" # This version is required to be compatible with embassy-usb
 
 # Leds
 smart-leds = "0.4"
 
 # To create frontend types
-ts-bind = { git = "https://github.com/SillyGoose123/ts-bind-no-std" }
+ts-bind =  { git = "https://github.com/SillyGoose123/ts-bind-no-std"}
+#ts-bind = {path = "J:/ts-bind-no-std/crates/ts-bind"}

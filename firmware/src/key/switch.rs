@@ -7,8 +7,16 @@ use embassy_rp::gpio::Input;
 async fn switch_check(index: usize, mut input: Input<'static>) {
     loop {
         input.wait_for_high().await;
-        let cfg = CONFIG.lock().await;
-        execute_actions(&cfg.as_ref().unwrap().switch_action[index]).await;
+        let actions = {
+            CONFIG
+                .lock()
+                .await
+                .as_ref()
+                .expect("Config not initialised at switch task!")
+                .switch_action[index]
+                .clone()
+        };
+        execute_actions(&actions).await;
     }
 }
 

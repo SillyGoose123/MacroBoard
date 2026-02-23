@@ -11,8 +11,8 @@ use embassy_rp::peripherals::USB;
 use embassy_rp::usb::{Driver, Endpoint as UsbEndpoint, In, Out};
 use embassy_usb::class::web_usb::{Config as WebUsbConfig, State as WebState, Url, WebUsb};
 use embassy_usb::driver::{Endpoint, EndpointIn, EndpointOut};
-use embassy_usb::{Builder, msos};
 use embassy_usb::msos::windows_version;
+use embassy_usb::{Builder, msos};
 use ts_bind::TsBind;
 
 // Add custom usb class
@@ -27,8 +27,8 @@ pub fn init_web(spawner: Spawner, mut builder: &mut Builder<'static, Driver<'sta
 
     // build & create interface
     builder.msos_descriptor(windows_version::WIN8_1, 1);
-    builder.msos_feature(msos::CompatibleIdFeatureDescriptor::new("WINUSB", ""));
-    let mut function = builder.function(0xFF, 0x00, 0x00); //vendor specific usb class
+    let mut function = builder.function(0xFF, 0x00, 0x00); //vendor 
+    function.msos_feature(msos::CompatibleIdFeatureDescriptor::new("WINUSB", ""));
     function.msos_feature(msos::RegistryPropertyFeatureDescriptor::new(
         "DeviceInterfaceGUIDs",
         msos::PropertyData::RegMultiSz(DEVICE_INTERFACE_GUIDS),
@@ -53,9 +53,11 @@ async fn web_usb_task(
 
         let mut data = [0; 64];
         while let Ok(data_size) = read_ep.read(data.as_mut()).await {
+            defmt::info!("web_usb_task: read {} bytes", data_size);
             if data_size == 0 {
                 continue;
             }
+            defmt::info!("web_usb_task: first byte is {}", data[0]);
 
             let command = Command::from_bytes(data[0]);
             if command.is_err() {
@@ -104,9 +106,15 @@ impl Command {
                 }
             }
             Command::GetConfig => {
+                defmt::info!("get_config");
                 let guard = CONFIG.lock().await;
                 let mut bytes = vec![0];
-                bytes.append(guard.as_ref().unwrap().to_bytes().as_mut());
+                let mut config_bytes = guard.as_ref().unwrap().to_bytes();
+                //cast to u32 is safe because this is a 32byte system
+                //the length of config is appended to for the frontend to easily read the config
+                bytes.append((config_bytes.len() as u32).to_bytes().as_mut());
+                bytes.append(config_bytes.as_mut());
+                defmt::info!("web_usb_task: read config bytes: {:?}", &bytes.as_slice());
                 bytes
             }
         }

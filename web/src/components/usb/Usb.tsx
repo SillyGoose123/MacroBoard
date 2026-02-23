@@ -2,7 +2,9 @@ import {useUsb} from "@/components/usb/useUsb.ts";
 import {Button} from "@/shadcn/components/ui/button.tsx";
 
 export const Usb = () => {
-  const {error, isLoading, check, isAvailable} = useUsb();
+  const {error, isLoading, check, isAvailable, config} = useUsb();
+
+  if (config != null) console.log(config)
 
   return (
       <>

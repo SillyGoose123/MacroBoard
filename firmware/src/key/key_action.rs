@@ -6,11 +6,12 @@ use alloc::vec::Vec;
 use ts_bind::TsBind;
 use usbd_hid::descriptor::MouseReport;
 
+#[repr(u8)]
 #[derive(TsBind, Copy, Clone)]
 pub enum Action {
-    KeyAction(SlimKeyReport),
-    MouseAction(MouseReport),
-    SummerAction(Tone),
+    KeyAction(SlimKeyReport) = 0x01,
+    MouseAction(MouseReport) = 0x02,
+    SummerAction(Tone) = 0x03,
 }
 
 impl Action {
@@ -86,7 +87,7 @@ impl BytesConvert for MouseReport {
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, TsBind)]
 pub struct SlimKeyReport {
     pub modifier: u8,
     pub keycodes: [u8; 6],

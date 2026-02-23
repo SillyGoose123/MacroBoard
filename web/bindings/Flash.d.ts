@@ -2,7 +2,8 @@
 
 import type { RGB8 } from "./RGB8";
 
-export interface Effect {
-   colors: (RGB8)[];
-   timeDiff: number;
+
+export interface Flash {
+   rgb: RGB8;
+   duration: number;
 }

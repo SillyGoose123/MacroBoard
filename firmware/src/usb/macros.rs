@@ -10,7 +10,7 @@ macro_rules! byte_enum {
     #[repr(u8)]
     #[derive(TsBind)]
     $vis enum $name {
-      $($variant),+
+      $($variant = $val),+
     }
 
     impl $name {

@@ -22,7 +22,6 @@ Summ = 0x02,
 _=> Self::DEFAULT,
 
 ## Config
-
 Max array length is always 255 => cause max u8 is length
 
 ### Effect 
@@ -31,3 +30,6 @@ Max array length is always 255 => cause max u8 is length
 for color => 3
 3 * length of colors + 1 
 
+# Result
+First u8 says error = 1 or ok = 0.
+all u32 are little endian

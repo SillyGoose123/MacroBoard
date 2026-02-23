@@ -6,14 +6,14 @@ use alloc::vec::Vec;
 use smart_leds::{RGB8, colors};
 use ts_bind::TsBind;
 
-#[derive(TsBind, Eq, PartialEq, Default)]
+#[derive(TsBind, Eq, PartialEq, Default, Clone)]
 pub struct Effect {
     pub(crate) colors: Vec<RGB8>,
     pub(crate) time_diff: u32, //in milliseconds,
 }
 
 impl Effect {
-    pub fn tick(&mut self, ticks: &mut u32, index: &mut u32) -> [RGB8; 5] {
+    pub fn tick(&self, ticks: &mut u32, index: &mut u32) -> [RGB8; 5] {
         if *ticks > self.time_diff {
             *ticks = 0;
             *index += 1;

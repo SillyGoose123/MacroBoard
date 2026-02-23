@@ -5,6 +5,7 @@
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
+    "types": ["vite/client"],
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -27,8 +28,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    },
-
+    }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "bindings",
+    "node_modules/@types/w3c-web-usb/index.d.ts"
+  ]
 }

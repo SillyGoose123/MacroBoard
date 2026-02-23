@@ -4,11 +4,12 @@ use alloc::vec::Vec;
 use ts_bind::TsBind;
 
 #[derive(TsBind, Copy, Clone)]
+#[repr(u8)]
 pub enum Tone {
-    LOW,
-    MEDIUM,
-    DEFAULT,
-    HIGH,
+    LOW = 0x01,
+    MEDIUM = 0x02,
+    DEFAULT = 0x04,
+    HIGH = 0x03,
 }
 
 impl Tone {

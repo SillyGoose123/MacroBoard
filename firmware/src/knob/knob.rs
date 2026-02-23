@@ -7,8 +7,17 @@ use embassy_rp::gpio::Input;
 async fn knob_switch(mut input: Input<'static>) {
     loop {
         input.wait_for_high().await;
-        let cfg = CONFIG.lock().await;
-        execute_actions(&cfg.as_ref().unwrap().knob_action.switch).await;
+        let action = {
+            CONFIG
+                .lock()
+                .await
+                .as_ref()
+                .expect("Config not initialised at knob task!")
+                .knob_action
+                .switch
+                .clone()
+        };
+        execute_actions(&action).await;
     }
 }
 
@@ -16,17 +25,25 @@ async fn knob_switch(mut input: Input<'static>) {
 async fn knob_rotary(mut rotary_pins: [Input<'static>; 2]) {
     loop {
         rotary_pins[0].wait_for_rising_edge().await;
-        let cfg = CONFIG.lock().await;
-        let rotary_action = cfg.as_ref().unwrap();
-
+        let action = {
+            CONFIG
+                .lock()
+                .await
+                .as_ref()
+                .expect("Config not initialised at knob task!")
+                .knob_action
+                .rotary_action
+                .clone()
+        };
         let action = if rotary_pins[1].is_low() {
-            &rotary_action.knob_action.rotary_action.minus
+            &action.minus
         } else {
-            &rotary_action.knob_action.rotary_action.plus
+            &action.plus
         };
         execute_actions(action).await;
     }
 }
+
 pub fn init_knob(spawner: Spawner, switch_pin: Input<'static>, rotary_pins: [Input<'static>; 2]) {
     spawner
         .spawn(knob_switch(switch_pin))

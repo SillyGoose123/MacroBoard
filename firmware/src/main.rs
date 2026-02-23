@@ -43,6 +43,7 @@ bind_interrupts!(struct Irqs {
     PIO0_IRQ_0 => InterruptHandler<PIO0>;
 });
 
+//TODO: USB TASK PROBLEM with CONFIG
 pub(crate) static CONFIG: Mutex<ThreadModeRawMutex, Option<Config>> = Mutex::new(None);
 pub(crate) static STORAGE: Mutex<ThreadModeRawMutex, Option<Storage>> = Mutex::new(None);
 pub(crate) static SUMMER_CHANNEL: Channel<ThreadModeRawMutex, Tone, 1> = Channel::new();
@@ -83,7 +84,7 @@ async fn main(spawner: Spawner) {
         info!("Init config!");
     }
 
-    init_switches(
+ /*   init_switches(
         spawner,
         [
             Input::new(rp.PIN_3, Pull::None),
@@ -94,9 +95,9 @@ async fn main(spawner: Spawner) {
             Input::new(rp.PIN_29, Pull::None),
         ],
     );
-    info!("Init switches!");
+    info!("Init switches!");*/
 
-    init_knob(
+    /*init_knob(
         spawner,
         Input::new(rp.PIN_26, Pull::Up),
         [
@@ -104,7 +105,7 @@ async fn main(spawner: Spawner) {
             Input::new(rp.PIN_28, Pull::Up),
         ],
     );
-    info!("Init knob!");
+    info!("Init knob!");*/
 
     let Pio {
         mut common, sm0, ..

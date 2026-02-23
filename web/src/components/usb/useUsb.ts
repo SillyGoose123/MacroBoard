@@ -1,37 +1,31 @@
 import {useCallback, useEffect, useState} from "react";
+import {usbPid, usbVid} from "../../../bindings/const.ts";
+import {initDevice, sendCommand} from "@/components/usb/commands.ts";
+import type {Command} from "../../../bindings/Command.ts";
+import type {Config} from "../../../bindings/Config";
 
-//https://pid.codes test id
 const filters = [
-  {vendorId: 0x1209, productId: 0x0001}
+  {vendorId: usbVid, productId: usbPid}
 ]
-
-//TODO: REFACTOR
 export const useUsb = () => {
   const [device, setDevice] = useState<null | USBDevice>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [config, setConfig] = useState<Config | null>(null);
 
-  const readConfig = useCallback(async () => {
+  const executeCommand = useCallback(async (command: Command, data: Uint8Array) => {
     setIsLoading(true);
 
     if (!device) {
-      setError("Can't read with no device");
+      setError("Can't execute with no device!");
       setIsLoading(false);
       return;
     }
 
-
+    await sendCommand(device, command, data)
 
     setIsLoading(false);
   }, [device])
-
-  const initDevice = useCallback(async (device: USBDevice) => {
-    await device.open();
-    if (device.configuration === null) await device.selectConfiguration(1);
-    await device.claimInterface(1);
-    setDevice(device);
-    await readConfig()
-  }, []);
 
   const check = useCallback(async () => {
     setIsLoading(true);
@@ -48,13 +42,18 @@ export const useUsb = () => {
       return;
     }
 
-    navigator.usb.requestDevice({filters}).then(initDevice).catch((err: Error) => {
+    navigator.usb.requestDevice({filters}).then(async value => {
+      setIsLoading(true);
+      setConfig(await initDevice(value));
+      setDevice(value);
+      setIsLoading(false);
+    }).catch((err: Error) => {
       console.error(err);
       setError(err.message);
       setDevice(null);
       setIsLoading(false);
     });
-  }, [device, initDevice]);
+  }, [device]);
 
   const close = useCallback(async () => {
     if(device == null) return;
@@ -75,6 +74,8 @@ export const useUsb = () => {
     check,
     isAvailable: device != null,
     isLoading,
-    error
+    error,
+    executeCommand,
+    config
   }
 }

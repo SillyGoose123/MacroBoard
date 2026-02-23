@@ -55,18 +55,18 @@ impl<T: BytesConvert, const N: usize> BytesConvert for [T; N] {
 }
 
 impl BytesConvert for u32 {
-    fn from_bytes(bytes: &[u8], pointer: &mut usize) -> Self {
-        u32::from_le_bytes([
-            get_byte!(bytes, pointer),
-            get_byte!(bytes, pointer),
-            get_byte!(bytes, pointer),
-            get_byte!(bytes, pointer),
-        ])
-    }
+  fn from_bytes(bytes: &[u8], pointer: &mut usize) -> Self {
+    u32::from_le_bytes([
+      get_byte!(bytes, pointer),
+      get_byte!(bytes, pointer),
+      get_byte!(bytes, pointer),
+      get_byte!(bytes, pointer),
+    ])
+  }
 
-    fn to_bytes(&self) -> Vec<u8> {
-        u32::to_le_bytes(*self).to_vec()
-    }
+  fn to_bytes(&self) -> Vec<u8> {
+    u32::to_le_bytes(*self).to_vec()
+  }
 }
 
 #[macro_export]

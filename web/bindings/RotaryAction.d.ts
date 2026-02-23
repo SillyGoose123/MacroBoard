@@ -2,6 +2,7 @@
 
 import type { Action } from "./Action";
 
+
 export interface RotaryAction {
    plus: (Action)[];
    minus: (Action)[];

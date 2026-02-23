@@ -7,7 +7,7 @@ use alloc::vec::Vec;
 use embassy_rp::flash::Error;
 use ts_bind::TsBind;
 
-#[derive(TsBind, Default)]
+#[derive(TsBind, Default, Clone)]
 pub struct Config {
     pub switch_action: [Vec<Action>; 6],
     pub knob_action: KnobAction,

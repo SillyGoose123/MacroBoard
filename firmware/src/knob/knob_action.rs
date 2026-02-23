@@ -3,7 +3,7 @@ use crate::key::key_action::Action;
 use alloc::vec::Vec;
 use ts_bind::TsBind;
 
-#[derive(TsBind, Default)]
+#[derive(TsBind, Default, Clone)]
 pub struct KnobAction {
     pub(crate) rotary_action: RotaryAction,
     pub(crate) switch: Vec<Action>,
@@ -18,11 +18,14 @@ impl BytesConvert for KnobAction {
     }
 
     fn to_bytes(&self) -> Vec<u8> {
-        todo!()
+        let mut bytes = Vec::new();
+        bytes.append(self.rotary_action.to_bytes().as_mut());
+        bytes.append(self.switch.to_bytes().as_mut());
+        bytes
     }
 }
 
-#[derive(TsBind, Default)]
+#[derive(TsBind, Default, Clone)]
 pub struct RotaryAction {
     pub plus: Vec<Action>,
     pub minus: Vec<Action>,
@@ -37,6 +40,9 @@ impl BytesConvert for RotaryAction {
     }
 
     fn to_bytes(&self) -> Vec<u8> {
-        todo!()
+        let mut bytes = Vec::new();
+        bytes.append(self.plus.to_bytes().as_mut());
+        bytes.append(self.minus.to_bytes().as_mut());
+        bytes
     }
 }
