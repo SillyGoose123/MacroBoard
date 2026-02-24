@@ -1,25 +1,41 @@
 import {useUsb} from "@/components/usb/useUsb.ts";
 import {Button} from "@/shadcn/components/ui/button.tsx";
+import styles from "@/components/usb/Usb.module.css";
+import {Backdrop} from "@/shadcn/components/ui/backdrop.tsx";
+import {Spinner} from "@/shadcn/components/ui/spinner.tsx";
+import {ConfigEditor} from "@/components/usb/config-editor/ConfigEditor.tsx";
 
-export const Usb = () => {
+export function Usb() {
   const {error, isLoading, check, isAvailable, config} = useUsb();
 
-  if (config != null) console.log(config)
+  return (<div className={styles.fullscreen}>
+        {
+          isAvailable && config != null
+              ? <ConfigEditor config={config}/>
+              : <CheckUsb check={check} error={error}/>
+        }
 
-  return (
-      <>
-        <Button onClick={check}>Check for macro board</Button>
-        <p>
-          LOADING: {isLoading.toString()}
-        </p>
-
-        <p>
-          isAvailable: {isAvailable.toString()}
-        </p>
-
-        <p>
-          error: {error == null ? "None" : error.toString()}
-        </p>
-      </>
+        <Backdrop
+            open={isLoading}
+            onClose={() => {
+            }}
+        >
+          <Spinner className={"size-10"}/>
+        </Backdrop>
+      </div>
   );
-};
+}
+
+type CheckUsbProps = {
+  check: boolean;
+  error: string | null;
+}
+
+function CheckUsb({check, error}: CheckUsbProps) {
+  return <div className={styles.checkUsb}>
+    {error == null
+        ? "Press the button to connect!"
+        : <span className={styles.error}>{error}</span>}
+    <Button onClick={check}>Check for macro board</Button>
+  </div>
+}

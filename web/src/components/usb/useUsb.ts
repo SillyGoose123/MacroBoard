@@ -7,7 +7,8 @@ import type {Config} from "@/../bindings/Config";
 const filters = [
   {vendorId: usbVid, productId: usbPid}
 ]
-export const useUsb = () => {
+
+export function useUsb() {
   const [device, setDevice] = useState<null | USBDevice>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +57,7 @@ export const useUsb = () => {
   }, [device]);
 
   const close = useCallback(async () => {
-    if(device == null) return;
+    if (device == null) return;
     setIsLoading(true);
     await device.close();
     setDevice(null);

@@ -1,0 +1,34 @@
+.configEditor {
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+}
+
+.row span {
+    font-size: 14px;
+    text-align: center;
+    width: 170px;
+}
+
+.icons {
+
+}
+
+.mcu {
+    rotate: 90deg;
+}
+
+.led {
+
+}
