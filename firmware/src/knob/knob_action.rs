@@ -19,8 +19,8 @@ impl BytesConvert for KnobAction {
 
     fn to_bytes(&self) -> Vec<u8> {
         let mut bytes = Vec::new();
-        bytes.append(self.rotary_action.to_bytes().as_mut());
-        bytes.append(self.switch.to_bytes().as_mut());
+        bytes.extend(self.rotary_action.to_bytes());
+        bytes.extend(self.switch.to_bytes());
         bytes
     }
 }
@@ -41,8 +41,8 @@ impl BytesConvert for RotaryAction {
 
     fn to_bytes(&self) -> Vec<u8> {
         let mut bytes = Vec::new();
-        bytes.append(self.plus.to_bytes().as_mut());
-        bytes.append(self.minus.to_bytes().as_mut());
+        bytes.extend(self.plus.to_bytes());
+        bytes.extend(self.minus.to_bytes());
         bytes
     }
 }

@@ -27,7 +27,7 @@ impl<T: BytesConvert> BytesConvert for Vec<T> {
         bytes.push(length as u8);
 
         for thing in self {
-            bytes.append(thing.to_bytes().as_mut());
+            bytes.extend(thing.to_bytes());
         }
 
         bytes

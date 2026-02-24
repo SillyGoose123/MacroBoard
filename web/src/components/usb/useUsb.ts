@@ -1,8 +1,8 @@
 import {useCallback, useEffect, useState} from "react";
-import {usbPid, usbVid} from "../../../bindings/const.ts";
-import {initDevice, sendCommand} from "@/components/usb/commands.ts";
-import type {Command} from "../../../bindings/Command.ts";
-import type {Config} from "../../../bindings/Config";
+import {usbPid, usbVid} from "@/../bindings//const.ts";
+import {initDevice, sendCommand} from "@/components/usb/utils/commands.ts";
+import type {Command} from "@/../bindings//Command.ts";
+import type {Config} from "@/../bindings/Config";
 
 const filters = [
   {vendorId: usbVid, productId: usbPid}

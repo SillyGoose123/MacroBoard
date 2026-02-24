@@ -46,9 +46,9 @@ impl BytesConvert for Config {
 
     fn to_bytes(&self) -> Vec<u8> {
         let mut bytes = Vec::new();
-        bytes.append(self.switch_action.to_bytes().as_mut());
-        bytes.append(self.knob_action.to_bytes().as_mut());
-        bytes.append(self.effect.to_bytes().as_mut());
+        bytes.extend(self.switch_action.to_bytes());
+        bytes.extend(self.knob_action.to_bytes());
+        bytes.extend(self.effect.to_bytes());
         bytes
     }
 }

@@ -66,7 +66,7 @@ impl BytesConvert for Effect {
             .iter()
             .for_each(|c| bytes.push(*c));
 
-        bytes.append(&mut self.colors.to_bytes());
+        bytes.extend(&self.colors.to_bytes());
         bytes
     }
 }

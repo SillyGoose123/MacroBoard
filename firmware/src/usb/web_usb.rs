@@ -109,11 +109,11 @@ impl Command {
                 defmt::info!("get_config");
                 let guard = CONFIG.lock().await;
                 let mut bytes = vec![0];
-                let mut config_bytes = guard.as_ref().unwrap().to_bytes();
+                let config_bytes = guard.as_ref().unwrap().to_bytes();
                 //cast to u32 is safe because this is a 32byte system
                 //the length of config is appended to for the frontend to easily read the config
-                bytes.append((config_bytes.len() as u32).to_bytes().as_mut());
-                bytes.append(config_bytes.as_mut());
+                bytes.extend((config_bytes.len() as u32).to_bytes());
+                bytes.extend(config_bytes);
                 defmt::info!("web_usb_task: read config bytes: {:?}", &bytes.as_slice());
                 bytes
             }

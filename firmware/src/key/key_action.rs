@@ -50,15 +50,15 @@ impl BytesConvert for Action {
         match self {
             Action::KeyAction(key_report) => {
                 bytes.push(0x1);
-                bytes.append(key_report.to_bytes().to_vec().as_mut());
+                bytes.extend(key_report.to_bytes().to_vec());
             }
             Action::MouseAction(mouse_report) => {
                 bytes.push(0x2);
-                bytes.append(mouse_report.to_bytes().to_vec().as_mut());
+                bytes.extend(mouse_report.to_bytes().to_vec());
             }
             Action::SummerAction(tone) => {
                 bytes.push(0x3);
-                bytes.append(tone.to_bytes().to_vec().as_mut());
+                bytes.extend(tone.to_bytes().to_vec());
             }
         }
         bytes
@@ -103,7 +103,7 @@ impl BytesConvert for SlimKeyReport {
 
     fn to_bytes(&self) -> Vec<u8> {
         let mut bytes = vec![self.modifier];
-        bytes.append(self.keycodes.to_bytes().as_mut());
+        bytes.extend(self.keycodes.to_bytes());
         bytes.to_vec()
     }
 }
