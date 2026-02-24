@@ -84,7 +84,7 @@ async fn main(spawner: Spawner) {
         info!("Init config!");
     }
 
- /*   init_switches(
+    init_switches(
         spawner,
         [
             Input::new(rp.PIN_3, Pull::None),
@@ -95,9 +95,9 @@ async fn main(spawner: Spawner) {
             Input::new(rp.PIN_29, Pull::None),
         ],
     );
-    info!("Init switches!");*/
+    info!("Init switches!");
 
-    /*init_knob(
+    init_knob(
         spawner,
         Input::new(rp.PIN_26, Pull::Up),
         [
@@ -105,7 +105,7 @@ async fn main(spawner: Spawner) {
             Input::new(rp.PIN_28, Pull::Up),
         ],
     );
-    info!("Init knob!");*/
+    info!("Init knob!");
 
     let Pio {
         mut common, sm0, ..

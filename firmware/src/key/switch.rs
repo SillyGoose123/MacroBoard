@@ -17,6 +17,7 @@ async fn switch_check(index: usize, mut input: Input<'static>) {
                 .clone()
         };
         execute_actions(&actions).await;
+        input.wait_for_low().await;
     }
 }
 

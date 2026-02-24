@@ -18,6 +18,7 @@ async fn knob_switch(mut input: Input<'static>) {
                 .clone()
         };
         execute_actions(&action).await;
+        input.wait_for_low().await;
     }
 }
 
@@ -35,12 +36,13 @@ async fn knob_rotary(mut rotary_pins: [Input<'static>; 2]) {
                 .rotary_action
                 .clone()
         };
-        let action = if rotary_pins[1].is_low() {
+        let actions = if rotary_pins[1].is_low() {
             &action.minus
         } else {
             &action.plus
         };
-        execute_actions(action).await;
+        execute_actions(actions).await;
+        rotary_pins[0].wait_for_falling_edge().await;
     }
 }
 
