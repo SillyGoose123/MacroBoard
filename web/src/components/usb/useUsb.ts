@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {usbPid, usbVid} from "@/../bindings//const.ts";
-import {initDevice, sendCommand} from "@/components/usb/utils/commands.ts";
+import {updateConfig, initDevice, sendCommand} from "@/components/Usb/utils/commands.ts";
 import type {Command} from "@/../bindings//Command.ts";
 import type {Config} from "@/../bindings/Config";
 
@@ -13,9 +13,10 @@ export function useUsb() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [config, setConfig] = useState<Config | null>(null);
+  const [wasChanged, setWasChanged] = useState<boolean>(false);
 
-  const executeCommand = useCallback(async (command: Command, data: Uint8Array) => {
-    setIsLoading(true);
+  const executeCommand = useCallback(async (command: Command, data: number[], silent: boolean) => {
+    setIsLoading(!silent && true);
 
     if (!device) {
       setError("Can't execute with no device!");
@@ -23,7 +24,7 @@ export function useUsb() {
       return;
     }
 
-    await sendCommand(device, command, data)
+    await sendCommand(device, command, Uint8Array.from(data))
 
     setIsLoading(false);
   }, [device])
@@ -71,12 +72,38 @@ export function useUsb() {
     })
   }, []);
 
+  const changeConfig = (config: Config) => {
+    setConfig({...config});
+    setWasChanged(true)
+  }
+
+  const save = useCallback(async () => {
+    setIsLoading(true)
+    if (!device || !config || !wasChanged) {
+      setError(!device
+          ? "Can't execute with no device!"
+          : !config
+              ? "Cant update an non existing config!"
+              : "Skipping save of unsaved config!"
+      );
+      setIsLoading(false);
+      return;
+    }
+
+    await updateConfig(device, config);
+
+    setIsLoading(false)
+  }, [config])
+
   return {
     check,
     isAvailable: device != null,
     isLoading,
     error,
     executeCommand,
-    config
+    config,
+    wasChanged,
+    changeConfig,
+    save
   }
 }

@@ -1,17 +1,33 @@
-import {useUsb} from "@/components/usb/useUsb.ts";
+import {useUsb} from "@/components/Usb/useUsb.ts";
 import {Button} from "@/shadcn/components/ui/button.tsx";
-import styles from "@/components/usb/Usb.module.css";
+import styles from "@/components/Usb/Usb.module.css";
 import {Backdrop} from "@/shadcn/components/ui/backdrop.tsx";
 import {Spinner} from "@/shadcn/components/ui/spinner.tsx";
-import {ConfigEditor} from "@/components/usb/config-editor/ConfigEditor.tsx";
+import {ConfigEditor} from "@/components/Usb/ConfigEditor/ConfigEditor.tsx";
 
 export function Usb() {
-  const {error, isLoading, check, isAvailable, config} = useUsb();
+  const {
+    error,
+    isLoading,
+    check,
+    isAvailable,
+    config,
+    executeCommand,
+    save,
+    wasChanged,
+    changeConfig
+  } = useUsb();
 
   return (<div className={styles.fullscreen}>
         {
           isAvailable && config != null
-              ? <ConfigEditor config={config}/>
+              ? <ConfigEditor
+                  config={config}
+                  executeCommand={executeCommand}
+                  wasChanged={wasChanged}
+                  changeConfig={changeConfig}
+                  save={save}
+              />
               : <CheckUsb check={check} error={error}/>
         }
 
@@ -27,7 +43,7 @@ export function Usb() {
 }
 
 type CheckUsbProps = {
-  check: boolean;
+  check: () => Promise<void>;
   error: string | null;
 }
 

@@ -1,7 +1,7 @@
 import {Command} from "@/../bindings/Command.ts";
 import type {Config} from "@/../bindings/Config";
-import {parseConfig} from "@/components/usb/utils/byte_deserializer.ts";
-import {configToBytes} from "@/components/usb/utils/byte_serializer.ts";
+import {parseConfig} from "@/components/Usb/utils/byte_deserializer.ts";
+import {configToBytes} from "@/components/Usb/utils/byte_serializer.ts";
 
 const ENDPOINT: number = 3;
 
@@ -31,14 +31,14 @@ export async function readConfig(device: USBDevice): Promise<Config> {
   if (result.status !== "ok"
       || result.data == undefined
       || result.data.getUint8(0) !== 0)
-    throw "Getting config-editor failed!";
+    throw "Getting ConfigEditor failed!";
 
   let configLength = result.data.getUint32(1, true);
   let config = await device.transferIn(ENDPOINT, configLength)
-  if (config.status !== "ok" || result.data == undefined) throw "Reading config-editor failed!";
+  if (config.status !== "ok" || result.data == undefined) throw "Reading ConfigEditor failed!";
   return parseConfig(config.data!);
 }
 
-export async function changeConfig(device: USBDevice, config: Config): Promise<boolean> {
+export async function updateConfig(device: USBDevice, config: Config): Promise<boolean> {
   return sendCommand(device, Command.getConfig, configToBytes(config));
 }
