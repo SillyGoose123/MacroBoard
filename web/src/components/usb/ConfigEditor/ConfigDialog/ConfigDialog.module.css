@@ -1,0 +1,13 @@
+div[role=dialog] {
+    min-width: 250px;
+    min-height: 250px;
+    max-height: 90vh;
+    max-width: 95vw;
+
+    padding-right: 16px;
+}
+
+.dialog-content {
+    min-width: 250px;
+    min-height: 250px;
+}
