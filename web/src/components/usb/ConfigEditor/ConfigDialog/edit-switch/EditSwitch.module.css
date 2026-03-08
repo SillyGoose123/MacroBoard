@@ -11,7 +11,7 @@
     height: 75vh;
 
     display: grid;
-    grid-template-columns: repeat(auto-fill, 450px);
+    grid-template-columns: repeat(auto-fill, 500px);
     grid-auto-rows: 125px;
     gap: 8px;
 

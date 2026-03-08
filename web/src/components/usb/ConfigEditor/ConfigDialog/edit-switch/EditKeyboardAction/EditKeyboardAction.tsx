@@ -11,7 +11,6 @@ type EditKeyboardAction = {
   change: (key: SlimKeyReport) => void,
 }
 
-//TODO: Modifier fixxen
 export function EditKeyboardAction({action, change}: EditKeyboardAction) {
   const handleKeycodeChange = useCallback((value: string, i: number) => {
     const keycodes: typeof action.keycodes = [...action.keycodes];
@@ -33,12 +32,12 @@ export function EditKeyboardAction({action, change}: EditKeyboardAction) {
             <Input
                 key={`keyboard-input-${i}`}
                 maxLength={1}
+                className={styles.input}
                 value={!action.keycodes[i] ? "" : String.fromCharCode(action.keycodes[i])}
                 onChange={(e) => handleKeycodeChange(e.target.value, i)}
             />
         ))}
       </div>
-
       <div className={styles.row}>
         {modifierList.map((Component, i) => {
           return <Toggle
@@ -59,7 +58,10 @@ export function EditKeyboardAction({action, change}: EditKeyboardAction) {
 
 function toBits(num: number) {
   let bits = num.toString(2).split('').map(Number);
-  return [...Array(8)].map((_, i) => bits[i] ?? 0);
+  return [
+    ...[...Array(8 - bits.length)].map((_, _i) => 0),
+    ...bits
+  ];
 
 }
 
