@@ -15,7 +15,8 @@ export function Usb() {
     executeCommand,
     save,
     wasChanged,
-    changeConfig
+    changeConfig,
+    reset
   } = useUsb();
 
   return (<div className={styles.fullscreen}>
@@ -27,6 +28,8 @@ export function Usb() {
                   wasChanged={wasChanged}
                   changeConfig={changeConfig}
                   save={save}
+                  reset={reset}
+                  error={error}
               />
               : <CheckUsb check={check} error={error}/>
         }

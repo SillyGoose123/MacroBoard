@@ -10,19 +10,29 @@ import {useCallback} from "react";
 import type {Action} from "@/../bindings/Action.ts";
 import type {KnobAction} from "@/../bindings/KnobAction";
 import type {Effect} from "@/../bindings/Effect";
-
+import {RefreshCcw, Save} from "lucide-react";
 
 type ConfigEditorProps = {
   config: Config;
   executeCommand: (command: Command, data: number[], silent: boolean) => Promise<void>,
   wasChanged: boolean,
   save: () => Promise<void>,
+  reset: () => Promise<void>,
   changeConfig: (config: Config) => void,
+  error: string | null,
 }
 export type ConfigOptions = Action[] | KnobAction | Effect;
 
-//TODO REFACTOR
-export function ConfigEditor({config, executeCommand, wasChanged, save, changeConfig}: ConfigEditorProps) {
+//TODO: REFACTOR
+export function ConfigEditor({
+                               config,
+                               executeCommand,
+                               wasChanged,
+                               save,
+                               changeConfig,
+                               reset,
+                               error
+                             }: ConfigEditorProps) {
   const topLevelUpdate = useCallback((changes: ConfigOptions) => {
     changeConfig({...config, ...changes})
   }, [config]);
@@ -35,6 +45,7 @@ export function ConfigEditor({config, executeCommand, wasChanged, save, changeCo
 
 
   return <div className={styles.configEditor}>
+    <span color={"var(--destructive)"}>{error ?? ""}</span>
     <div className={styles.row}>
       {ConfigType.MCU}
       <ConfigDialog type={ConfigType.Knob}
@@ -107,9 +118,14 @@ export function ConfigEditor({config, executeCommand, wasChanged, save, changeCo
       />
     </div>
 
-    <div>
-      <Button disabled={!wasChanged} onClick={save}>Save</Button>
+    <div className={styles.row}>
+      <Button className={styles.action} disabled={!wasChanged} onClick={reset} variant={"outline"}>
+        <RefreshCcw strokeWidth={1.75}/>
+      </Button>
+      <Button className={styles.action} disabled={!wasChanged} onClick={save} variant={"outline"}>
+        <Save strokeWidth={1.75}/>
+      </Button>
     </div>
-  </div>;
+  </div>
 }
 

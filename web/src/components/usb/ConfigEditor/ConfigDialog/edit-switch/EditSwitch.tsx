@@ -8,8 +8,12 @@ import {AudioLines, Keyboard, Mouse, Plus, Trash2} from "lucide-react";
 import {Item} from "@/shadcn/components/ui/item";
 import {EditSummerAction} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditSummerAction.tsx";
 import {Command} from "../../../../../../bindings/Command.ts";
-import {EditKeyboardAction} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.tsx";
+import {
+  EditKeyboardAction
+} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.tsx";
 import type {SlimKeyReport} from "../../../../../../bindings/SlimKeyReport";
+import {EditMouseAction} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditMouseAction.tsx";
+import type {MouseReport} from "../../../../../../bindings/MouseReport";
 
 type EditSwitchProps = {
   changeConfig: (config: ConfigOptions) => void,
@@ -90,6 +94,19 @@ type EditActionProps = {
 
 function EditAction({action, changeAction, removeAction, executeCommand}: EditActionProps) {
   return <div className={styles.row}>
+    {action.type === Action.keyAction &&
+      <EditKeyboardAction
+        action={action.data as SlimKeyReport}
+        change={(action) => changeAction({type: 1, data: action})}
+      />}
+
+    {action.type === Action.mouseAction &&
+      <EditMouseAction
+        action={action.data as MouseReport}
+        change={(action) => changeAction({type: 2, data: action})}
+      />
+    }
+
     {action.type === Action.summerAction &&
       <EditSummerAction
         action={action.data as number}
@@ -97,17 +114,6 @@ function EditAction({action, changeAction, removeAction, executeCommand}: EditAc
         executeCommand={executeCommand}
       />
     }
-
-    {action.type === Action.mouseAction && <div>
-      <Mouse/>
-    </div>}
-
-
-    {action.type === Action.keyAction &&
-      <EditKeyboardAction
-        action={action.data as SlimKeyReport}
-        change={(action) => changeAction({type: 1, data: action})}
-      />}
 
     <Button variant={"destructive"} onClick={removeAction}>
       <Trash2/>

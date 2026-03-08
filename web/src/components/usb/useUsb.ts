@@ -1,12 +1,12 @@
 import {useCallback, useEffect, useState} from "react";
 import {usbPid, usbVid} from "@/../bindings//const.ts";
-import {updateConfig, initDevice, sendCommand} from "@/components/Usb/utils/commands.ts";
+import {updateConfig, initDevice, sendCommand, readConfig} from "@/components/Usb/utils/commands.ts";
 import type {Command} from "@/../bindings//Command.ts";
 import type {Config} from "@/../bindings/Config";
 
 const filters = [
   {vendorId: usbVid, productId: usbPid}
-]
+];
 
 export function useUsb() {
   const [device, setDevice] = useState<null | USBDevice>(null);
@@ -46,7 +46,15 @@ export function useUsb() {
 
     navigator.usb.requestDevice({filters}).then(async value => {
       setIsLoading(true);
-      setConfig(await initDevice(value));
+      try {
+        setConfig(await initDevice(value));
+      } catch (error) {
+        setError(error as string);
+        setIsLoading(false);
+        setDevice(null);
+        return;
+      }
+
       setDevice(value);
       setIsLoading(false);
     }).catch((err: Error) => {
@@ -90,10 +98,34 @@ export function useUsb() {
       return;
     }
 
-    await updateConfig(device, config);
+    try {
+      await updateConfig(device, config);
+    } catch (e) {
+      setError(e as string);
+    }
+
 
     setIsLoading(false)
-  }, [config])
+  }, [config]);
+
+  const reset = useCallback(async () => {
+    setIsLoading(true);
+    if (!device) {
+      setError("Can't execute with no device!");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      let config = await readConfig(device);
+      setConfig(config);
+      setWasChanged(false);
+    } catch (e) {
+      setError(e as string);
+    }
+
+    setIsLoading(false);
+  }, [device])
 
   return {
     check,
@@ -104,6 +136,7 @@ export function useUsb() {
     config,
     wasChanged,
     changeConfig,
-    save
+    save,
+    reset
   }
 }

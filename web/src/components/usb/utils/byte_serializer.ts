@@ -27,8 +27,7 @@ function switchAction(switchAction: [Action[], Action[], Action[], Action[], Act
   return bytes;
 }
 
-function action(action: Action): Bytes {
-  function actionData(): Bytes {
+function action(action: Action): Bytes {function actionData(): Bytes {
     switch (action.type) {
       case ActionEnum.keyAction:
         return keyAction(action.data as SlimKeyReport);
@@ -102,7 +101,7 @@ function array<T>(array: Array<T>, toBytesFn: (value: T) => Bytes): Bytes {
     bytes.push(...toBytesFn(element));
   }
 
-  if (bytes.length < 256) throw "Max array length is 255!";
+  if (bytes.length > 255) throw "Max array length is 255!";
   return [
     bytes.length,
     ...bytes

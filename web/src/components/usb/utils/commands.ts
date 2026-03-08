@@ -40,5 +40,5 @@ export async function readConfig(device: USBDevice): Promise<Config> {
 }
 
 export async function updateConfig(device: USBDevice, config: Config): Promise<boolean> {
-  return sendCommand(device, Command.getConfig, configToBytes(config));
+  return sendCommand(device, Command.changeConfig, configToBytes(config));
 }

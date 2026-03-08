@@ -1,10 +1,10 @@
-import {Keyboard} from "lucide-react";
+import {ArrowBigUp, ArrowBigUpDash, ArrowDown01, Grid2X2, Keyboard, MouseOff} from "lucide-react";
 import type {SlimKeyReport} from "@/../bindings/SlimKeyReport";
 import styles
   from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.module.css";
 import {
-  EditModifiers
-} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditModifiers.tsx";
+  EditU8Mapped
+} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditU8MappedProps.tsx";
 import {EditKeycodes} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeycodes.tsx";
 
 type EditKeyboardAction = {
@@ -20,8 +20,18 @@ export function EditKeyboardAction({action, change}: EditKeyboardAction) {
           keycodes={action.keycodes}
           change={(keycodes) => change({...action, keycodes: keycodes})}
       />
-      <EditModifiers
-          modifier={action.modifier}
+      <EditU8Mapped
+          value={action.modifier}
+          options={[
+            ArrowBigUp,
+            () => <span>CTRL</span>,
+            () => <span>ALT</span>,
+            () => <span>ALT GR</span>,
+            ArrowBigUpDash,
+            ArrowDown01,
+            Grid2X2,
+            MouseOff
+          ]}
           change={(num) => change({...action, modifier: num})}
       />
     </div>
