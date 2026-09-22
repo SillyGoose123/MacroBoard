@@ -47,10 +47,6 @@ async fn knob_rotary(mut rotary_pins: [Input<'static>; 2]) {
 }
 
 pub fn init_knob(spawner: Spawner, switch_pin: Input<'static>, rotary_pins: [Input<'static>; 2]) {
-    spawner
-        .spawn(knob_switch(switch_pin))
-        .expect("Failed to init knob.");
-    spawner
-        .spawn(knob_rotary(rotary_pins))
-        .expect("Failed to init knob.");
+    spawner.spawn(knob_switch(switch_pin).expect("Failed to init knob."));
+    spawner.spawn(knob_rotary(rotary_pins).expect("Failed to init knob."));
 }

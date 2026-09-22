@@ -38,9 +38,7 @@ pub fn init_web(spawner: Spawner, mut builder: &mut Builder<'static, Driver<'sta
     let read_ep = alt.endpoint_bulk_out(None, 64);
     let write_ep = alt.endpoint_bulk_in(None, 64);
 
-    spawner
-        .spawn(web_usb_task(read_ep, write_ep))
-        .expect("Failed to spawn web usb task");
+    spawner.spawn(web_usb_task(read_ep, write_ep).expect("Failed to spawn web usb task"));
 }
 
 #[task]

@@ -1,0 +1,5 @@
+[wokwi]
+version = 1
+elf = "../target/thumbv6m-none-eabi/debug/firmware"
+firmware = "../target/thumbv6m-none-eabi/debug/firmware"
+gdbServerPort = 3333

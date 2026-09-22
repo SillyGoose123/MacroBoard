@@ -8,11 +8,12 @@ import type {KnobAction} from "@/../bindings/KnobAction";
 import type {Effect} from "@/../bindings/Effect";
 import type {RGB8} from "@/../bindings/RGB8";
 
-type UsbData = DataView<ArrayBufferLike>;
+export type UsbData = DataView<ArrayBufferLike>;
+export type Pointer = {value: number};
 
 export function parseConfig(raw: UsbData): Config {
   let actions = [];
-  let pointer = 0;
+  let pointer = { value: 0}; //make object so its change is shared
 
   for (let i = 0; i < 6; i++) {
     actions.push(parseArray(raw, pointer, parseAction));
@@ -26,7 +27,7 @@ export function parseConfig(raw: UsbData): Config {
 }
 
 
-function parseAction(raw: UsbData, pointer: number): Action {
+export function parseAction(raw: UsbData, pointer: Pointer): Action {
   let byte = getByte(raw, pointer);
   switch (byte) {
     case ActionEnum.keyAction:
@@ -43,7 +44,7 @@ function parseAction(raw: UsbData, pointer: number): Action {
   }
 }
 
-function parseKeyAction(raw: UsbData, pointer: number): SlimKeyReport {
+export function parseKeyAction(raw: UsbData, pointer: Pointer): SlimKeyReport {
   return {
     modifier: getByte(raw, pointer),
     keycodes: [
@@ -57,7 +58,7 @@ function parseKeyAction(raw: UsbData, pointer: number): SlimKeyReport {
   }
 }
 
-function parseMouseReport(raw: UsbData, pointer: number): MouseReport {
+export function parseMouseReport(raw: UsbData, pointer: Pointer): MouseReport {
   return {
     buttons: getByte(raw, pointer),
     x: getI8(raw, pointer),
@@ -67,7 +68,7 @@ function parseMouseReport(raw: UsbData, pointer: number): MouseReport {
   }
 }
 
-function parseTone(raw: UsbData, pointer: number): Tone {
+export function parseTone(raw: UsbData, pointer: Pointer): Tone {
   switch (getByte(raw, pointer)) {
     case Tone.low:
       return Tone.low;
@@ -80,30 +81,30 @@ function parseTone(raw: UsbData, pointer: number): Tone {
   }
 }
 
-function parseKnobAction(raw: UsbData, pointer: number): KnobAction {
+export function parseKnobAction(raw: UsbData, pointer: Pointer): KnobAction {
   return {
     rotaryAction: parseRotaryAction(raw, pointer),
     switch: parseArray(raw, pointer, parseAction)
   };
 }
 
-function parseRotaryAction(raw: UsbData, pointer: number) : RotaryAction {
+export function parseRotaryAction(raw: UsbData, pointer: Pointer): RotaryAction {
   return {
     plus: parseArray(raw, pointer, parseAction),
     minus: parseArray(raw, pointer, parseAction)
   }
 }
 
-function parseEffect(raw: UsbData, pointer: number): Effect {
+export function parseEffect(raw: UsbData, pointer: Pointer): Effect {
   let colors = parseArray(raw, pointer, parseRGB8);
-  pointer += 4;
+  pointer.value += 4;
   return {
     colors,
-    timeDiff: raw.getUint32(pointer - 4, true)
+    timeDiff: raw.getUint32(pointer.value - 4, true)
   }
 }
 
-function parseRGB8(raw: UsbData, pointer: number): RGB8 {
+export function parseRGB8(raw: UsbData, pointer: Pointer): RGB8 {
   return {
     r: getByte(raw, pointer),
     g: getByte(raw, pointer),
@@ -111,19 +112,18 @@ function parseRGB8(raw: UsbData, pointer: number): RGB8 {
   }
 }
 
-
 /* UTILS */
-function getByte(raw: UsbData, pointer: number): number {
-  pointer += 1;
-  return raw.getUint8(pointer - 1);
+export function getByte(raw: UsbData, pointer: Pointer): number {
+  pointer.value += 1;
+  return raw.getUint8(pointer.value - 1);
 }
 
-function getI8(raw: UsbData, pointer: number) : number {
-  pointer += 1;
-  return raw.getInt8(pointer - 1);
+export function getI8(raw: UsbData, pointer: Pointer): number {
+  pointer.value += 1;
+  return raw.getInt8(pointer.value - 1);
 }
 
-function parseArray<T>(raw: UsbData, pointer: number, parsingFn: (raw: UsbData, pointer: number) => T) : Array<T> {
+export function parseArray<T>(raw: UsbData, pointer: Pointer, parsingFn: (raw: UsbData, pointer: Pointer) => T): Array<T> {
   let length = getByte(raw, pointer);
   let result: Array<T> = [];
 

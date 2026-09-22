@@ -23,6 +23,6 @@ async fn switch_check(index: usize, mut input: Input<'static>) {
 
 pub fn init_switches(spawner: Spawner, inputs: [Input<'static>; 6]) {
     for (index, input) in inputs.into_iter().enumerate() {
-        spawner.spawn(switch_check(index, input)).unwrap();
+        spawner.spawn(switch_check(index, input).expect("Init switch_check_failed!"));
     }
 }

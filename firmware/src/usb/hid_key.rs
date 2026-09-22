@@ -4,7 +4,7 @@ use embassy_executor::{task, Spawner};
 use embassy_rp::peripherals::USB;
 use embassy_rp::usb::Driver;
 use embassy_usb::Builder;
-use embassy_usb::class::hid::{HidReaderWriter, State as HidState};
+use embassy_usb::class::hid::{HidBootProtocol, HidReaderWriter, HidSubclass, State as HidState};
 use usbd_hid::descriptor::{KeyboardReport, SerializedDescriptor};
 
 pub fn init_hid_key(spawner: Spawner, mut builder: &mut Builder<'static, Driver<'static, USB>>) {
@@ -15,11 +15,13 @@ pub fn init_hid_key(spawner: Spawner, mut builder: &mut Builder<'static, Driver<
     request_handler: None,
     poll_ms: 10,
     max_packet_size: 8,
+    hid_subclass: HidSubclass::Boot,
+    hid_boot_protocol: HidBootProtocol::Keyboard,
   };
   let hid = HidReaderWriter::<_, 1, 8>::new(&mut builder, hid_state, config);
   spawner
-    .spawn(hid_key_task(hid))
-    .expect("Failed to spawn hid key task.");
+    .spawn(hid_key_task(hid)
+    .expect("Failed to spawn hid key task."));
 }
 
 #[task] 

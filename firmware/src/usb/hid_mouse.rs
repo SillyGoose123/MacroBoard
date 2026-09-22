@@ -3,7 +3,7 @@ use embassy_executor::{Spawner, task};
 use embassy_rp::peripherals::USB;
 use embassy_rp::usb::Driver;
 use embassy_usb::Builder;
-use embassy_usb::class::hid::{HidReaderWriter, State as HidState};
+use embassy_usb::class::hid::{HidBootProtocol, HidReaderWriter, HidSubclass, State as HidState};
 use usbd_hid::descriptor::{MouseReport, SerializedDescriptor};
 
 pub fn init_hid_mouse(spawner: Spawner, mut builder: &mut Builder<'static, Driver<'static, USB>>) {
@@ -13,9 +13,11 @@ pub fn init_hid_mouse(spawner: Spawner, mut builder: &mut Builder<'static, Drive
         request_handler: None,
         poll_ms: 10,
         max_packet_size: 8,
+      hid_subclass: HidSubclass::No,
+      hid_boot_protocol: HidBootProtocol::Mouse,
     };
     let hid = HidReaderWriter::<_, 1, 8>::new(&mut builder, hid_state, config);
-    spawner.spawn(hid_mouse_task(hid)).expect("Failed to spawn hid mouse task.")
+    spawner.spawn(hid_mouse_task(hid).expect("Failed to spawn hid mouse task."))
 }
 
 #[task]

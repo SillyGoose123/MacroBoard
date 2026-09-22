@@ -3,10 +3,10 @@
 use crate::bytes_trait::BytesConvert;
 use alloc::vec;
 use alloc::vec::Vec;
-use embassy_rp::Peri;
-use embassy_rp::dma::Channel;
 use embassy_rp::flash::{Async, Error, Flash};
-use embassy_rp::peripherals::FLASH;
+use embassy_rp::interrupt::typelevel::{Binding, DMA_IRQ_0};
+use embassy_rp::peripherals::{DMA_CH0, FLASH};
+use embassy_rp::{Peri, dma};
 
 const START_ADDRESS: u32 = 0x10000100;
 const FLASH_SIZE: usize = 2_096_640; // bytes hahah => 2mb
@@ -21,10 +21,11 @@ pub struct Storage {
 impl Storage {
     pub fn init(
         peri_flash: Peri<'static, FLASH>,
-        peri_channel: Peri<'static, impl Channel>,
+        peri_channel: Peri<'static, DMA_CH0>,
+        irq: impl Binding<DMA_IRQ_0, dma::InterruptHandler<DMA_CH0>> + 'static,
     ) -> Self {
         Self {
-            flash: Flash::new(peri_flash, peri_channel),
+            flash: Flash::new(peri_flash, peri_channel, irq),
             new_write_sector: None,
         }
     }

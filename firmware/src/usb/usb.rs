@@ -6,9 +6,9 @@ use embassy_usb::{Builder, Config as UsbConfig, UsbDevice};
 use crate::mk_static;
 use crate::usb::hid_key::init_hid_key;
 use crate::usb::hid_mouse::init_hid_mouse;
+use crate::usb::web_usb::init_web;
 use crate::usb::{MANUFACTURER, PRODUCT, SERIAL_NUMBER, USB_PID, USB_VID};
 use embassy_rp::usb::{Driver as UsbDriver, Driver, InterruptHandler};
-use crate::usb::web_usb::init_web;
 
 bind_interrupts!(struct Irqs {
     USBCTRL_IRQ => InterruptHandler<USB>;
@@ -48,9 +48,7 @@ pub fn init_usb(spawner: Spawner, usb: Peri<'static, USB>) {
 
     // RUN USB
     let usb = builder.build();
-    spawner
-        .spawn(usb_task(usb))
-        .expect("Failed to spawn USB task");
+    spawner.spawn(usb_task(usb).expect("Failed to spawn USB task"));
 }
 
 #[embassy_executor::task]

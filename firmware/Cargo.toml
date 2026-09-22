@@ -17,12 +17,15 @@ codegen-units = 1
 lto = "fat"
 opt-level = "z"
 
+[features]
+XIAO=[]
+
 [dependencies]
 # embassy base
-embassy-sync = "0.7.2"
-embassy-executor = { version = "0.9.1", features = ["arch-cortex-m", "executor-thread", "defmt"] }
+embassy-sync = "0.8.0"
+embassy-executor = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread", "defmt"] }
 embassy-time = { version = "0.5.0", features = ["defmt", "defmt-timestamp-uptime"] }
-embassy-rp = { version = "0.9.0", features = ["rp2040", "critical-section-impl", "time-driver", "defmt", "boot2-w25q080"] }
+embassy-rp = { version = "0.10.0", features = ["rp2040", "critical-section-impl", "time-driver", "defmt", "boot2-w25q080"] }
 
 # log & panic
 defmt = "1.0.1"
@@ -37,8 +40,8 @@ embedded-alloc = "0.7.0"
 
 
 # Usb
-embassy-usb = { version = "0.5.1", features = ["defmt"] }
-usbd-hid = "=0.8.2" # This version is required to be compatible with embassy-usb
+embassy-usb = { version = "0.6.0", features = ["defmt"] }
+usbd-hid = "0.10.2" # This version is required to be compatible with embassy-usb
 
 # Leds
 smart-leds = "0.4"

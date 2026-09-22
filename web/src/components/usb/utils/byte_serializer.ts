@@ -6,8 +6,9 @@ import type {SlimKeyReport} from "@/../bindings/SlimKeyReport";
 import type {MouseReport} from "@/../bindings/MouseReport";
 import type {Tone} from "@/../bindings/Tone.ts";
 import type {RotaryAction} from "@/../bindings/RotaryAction";
+import type {RGB8} from "../../../../bindings/RGB8";
 
-type Bytes = number[];
+export type U8Numbers = number[];
 
 export function configToBytes(config: Config): Uint8Array<ArrayBufferLike> {
   return Uint8Array.from([
@@ -17,8 +18,8 @@ export function configToBytes(config: Config): Uint8Array<ArrayBufferLike> {
   ]);
 }
 
-function switchAction(switchAction: [Action[], Action[], Action[], Action[], Action[], Action[]]): Bytes {
-  let bytes: Bytes = [];
+export function switchAction(switchAction: [Action[], Action[], Action[], Action[], Action[], Action[]]): U8Numbers {
+  let bytes: U8Numbers = [];
 
   for (const actionArr of switchAction) {
     bytes.push(...array(actionArr, action))
@@ -27,83 +28,97 @@ function switchAction(switchAction: [Action[], Action[], Action[], Action[], Act
   return bytes;
 }
 
-function action(action: Action): Bytes {function actionData(): Bytes {
-    switch (action.type) {
+export function action({type, data}: Action): U8Numbers {function actionData(): U8Numbers {
+    switch (type) {
       case ActionEnum.keyAction:
-        return keyAction(action.data as SlimKeyReport);
+        return keyAction(data as SlimKeyReport);
       case ActionEnum.mouseAction:
-        return mouseAction(action.data as MouseReport);
+        return mouseAction(data as MouseReport);
       case ActionEnum.summerAction:
-        return summerAction(action.data as Tone);
+        return summerAction(data as Tone);
       default:
         return [];
     }
   }
 
   return [
-    action.type,
+    type,
     ...actionData()
   ];
 }
 
-function keyAction(keyAction: SlimKeyReport): Bytes {
+export function keyAction({modifier, keycodes}: SlimKeyReport): U8Numbers {
   return [
-    keyAction.modifier,
-    ...keyAction.keycodes
+    modifier,
+    ...keycodes
   ];
 }
 
-function mouseAction(mouseAction: MouseReport): Bytes {
-  return Object.values(mouseAction);
+export function mouseAction({buttons, x, y, wheel, pan}: MouseReport): U8Numbers {
+  return [
+    buttons,
+    ...i8(x),
+    ...i8(y),
+    ...i8(wheel),
+    ...i8(pan),
+  ];
 }
 
-function summerAction(summerAction: Tone): Bytes {
+export function summerAction(summerAction: Tone): U8Numbers {
   return [summerAction];
 }
 
-function knobAction(knobAction: KnobAction) {
+export function knobAction(knobAction: KnobAction) {
   return [
       ...rotaryAction(knobAction.rotaryAction),
       ...array(knobAction.switch, action)
   ];
 }
 
-function rotaryAction(rotaryAction: RotaryAction) {
+export function rotaryAction({plus, minus}: RotaryAction) {
   return [
-      ...array(rotaryAction.plus, action),
-      ...array(rotaryAction.minus, action)
+      ...array(plus, action),
+      ...array(minus, action)
   ];
 }
 
+export function rgb8(val: RGB8) {
+  return Object.values(val);
+}
 
-function effect(effect: Effect) {
+export function effect({colors, timeDiff}: Effect) {
   return [
-      ...effect.colors,
-      u32(effect.timeDiff)
+    ...array(colors, (val) => rgb8(val)),
+    ...u32(timeDiff)
   ];
 }
 
 /* UTILS */
-function u32(u32: number): Bytes {
+export function u32(u32: number): U8Numbers {
   // Little-endian (least significant byte first)
   return [
     u32 & 0xFF,
     (u32 >> 8) & 0xFF,
     (u32 >> 16) & 0xFF,
-    (u32 >> 24) & 0xFF
+    (u32 >> 24) & 0xFF,
   ];
 }
 
-function array<T>(array: Array<T>, toBytesFn: (value: T) => Bytes): Bytes {
-  let bytes: Bytes = [];
+export function i8(i8: number): U8Numbers {
+  return [(i8 + 256) % 256];
+}
+
+
+export function array<T>(array: Array<T>, toBytesFn: (value: T) => U8Numbers): U8Numbers {
+  let bytes: U8Numbers = [];
 
   for (const element of array) {
     bytes.push(...toBytesFn(element));
   }
 
-  if (bytes.length > 255) throw "Max array length is 255!";
+  if (array.length > 255) throw "Max array length is 255!";
   return [
-    bytes.length,
+    array.length,
     ...bytes
   ];
 }

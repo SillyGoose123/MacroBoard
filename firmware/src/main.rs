@@ -24,9 +24,9 @@ use crate::summer::tones::Tone;
 use crate::usb::usb::init_usb;
 use defmt::info;
 use embassy_executor::Spawner;
-use embassy_rp::bind_interrupts;
+use embassy_rp::{bind_interrupts, dma};
 use embassy_rp::gpio::{Input, Pull};
-use embassy_rp::peripherals::PIO0;
+use embassy_rp::peripherals::{PIO0, DMA_CH1, DMA_CH0};
 use embassy_rp::pio::{InterruptHandler, Pio};
 use embassy_rp::pio_programs::ws2812::{PioWs2812, PioWs2812Program};
 use embassy_rp::pwm::{Config as PWMConfig, Pwm};
@@ -36,11 +36,15 @@ use embassy_sync::mutex::Mutex;
 use embedded_alloc::LlffHeap as Heap;
 use usbd_hid::descriptor::MouseReport;
 
+
 #[allow(unused_imports)]
 use {critical_section as _, defmt_rtt as _, panic_probe as _};
 
+
+
 bind_interrupts!(struct Irqs {
     PIO0_IRQ_0 => InterruptHandler<PIO0>;
+    DMA_IRQ_0 => dma::InterruptHandler<DMA_CH0>, dma::InterruptHandler<DMA_CH1>;
 });
 
 //TODO: USB TASK PROBLEM with CONFIG
@@ -59,7 +63,7 @@ async fn main(spawner: Spawner) {
     //init
     let rp = embassy_rp::init(Default::default());
 
-    // Initialize the allocator BEFORE you use it
+  // Initialize the allocator BEFORE you use it
     {
         use core::mem::MaybeUninit;
         const HEAP_SIZE: usize = 50 * 1024;
@@ -70,7 +74,7 @@ async fn main(spawner: Spawner) {
     // They're in scopes because else the guard keeps the lock forever
     {
         //storage
-        let storage = Storage::init(rp.FLASH, rp.DMA_CH0);
+        let storage = Storage::init(rp.FLASH, rp.DMA_CH0, Irqs);
         let mut guard = STORAGE.lock().await;
         *guard = Some(storage);
         info!("Init storage!");
@@ -92,7 +96,11 @@ async fn main(spawner: Spawner) {
             Input::new(rp.PIN_2, Pull::None),
             Input::new(rp.PIN_1, Pull::None),
             Input::new(rp.PIN_0, Pull::None),
-            Input::new(rp.PIN_29, Pull::None),
+            if cfg!(feature = "XIAO") {
+                Input::new(rp.PIN_29, Pull::None)
+            } else {
+                Input::new(rp.PIN_5, Pull::None)
+            },
         ],
     );
     info!("Init switches!");
@@ -111,17 +119,20 @@ async fn main(spawner: Spawner) {
         mut common, sm0, ..
     } = Pio::new(rp.PIO0, Irqs);
     let program = PioWs2812Program::new(&mut common);
-    let ws2812 = PioWs2812::new(&mut common, sm0, rp.DMA_CH1, rp.PIN_6, &program);
-    spawner
-        .spawn(effect_task(ws2812))
-        .expect("Failed to init leds.");
+    let ws2812 = PioWs2812::new(
+      &mut common,
+      sm0,
+      rp.DMA_CH1,
+      Irqs,
+      rp.PIN_6,
+      &program
+    );
+    spawner.spawn(effect_task(ws2812).expect("Failed to init leds."));
     info!("Init leds!");
 
     let summer_conf = PWMConfig::default();
     let pwm = Pwm::new_output_b(rp.PWM_SLICE3, rp.PIN_7, summer_conf);
-    spawner
-        .spawn(summer_handler(pwm))
-        .expect("Failed to init summer.");
+    spawner.spawn(summer_handler(pwm).expect("Failed to init summer."));
     info!("Init summer!");
 
     init_usb(spawner, rp.USB);
