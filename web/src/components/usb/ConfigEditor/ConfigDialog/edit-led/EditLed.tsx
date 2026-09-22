@@ -1,7 +1,6 @@
 import type {ConfigOptions} from "@/components/Usb/ConfigEditor/ConfigEditor.tsx";
 import type {Effect} from "@/../bindings/Effect";
 import {Input} from "@/shadcn/components/ui/input.tsx";
-import {RgbColorPicker, RgbStringColorPicker} from "react-colorful";
 import type {RGB8} from "../../../../../../bindings/RGB8";
 
 type EditLedProps = {
@@ -12,10 +11,13 @@ type EditLedProps = {
 export function EditLed({config}: EditLedProps) {
   return <div>
     <div>
+      {
+        config.colors.map((color) => <EditColor config={color}/>)
+      }
 
     </div>
 
-    <Input />
+    <Input/>
   </div>
 }
 
@@ -23,7 +25,7 @@ type EditColorProps = {
   config: RGB8
 };
 
-function EditColor({config}: EditColorProps) {
+function EditColor({}: EditColorProps) {
   return <div>
 
   </div>;

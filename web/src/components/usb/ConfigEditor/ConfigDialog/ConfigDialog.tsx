@@ -30,10 +30,10 @@ export function ConfigDialog({type, config, changeConfig, executeCommand}: Confi
   if (type === ConfigType.MCU || type === ConfigType.Summer) return type;
 
   const typeName = type == ConfigType.LED
-      ? "LED"
-      : type === ConfigType.Knob
-          ? "Knob"
-          : "Switch"
+    ? "LED"
+    : type === ConfigType.Knob
+      ? "Knob"
+      : "Switch"
   ;
 
   return (<Dialog>
@@ -55,7 +55,8 @@ export function ConfigDialog({type, config, changeConfig, executeCommand}: Confi
         </DialogDescription>
       </DialogHeader>
       {typeName === "LED" && <EditLed changeConfig={changeConfig} config={config as Effect}/>}
-      {typeName === "Knob" && <EditKnob changeConfig={changeConfig} config={config as KnobAction}/>}
+      {typeName === "Knob" &&
+        <EditKnob changeConfig={changeConfig} config={config as KnobAction} executeCommand={executeCommand}/>}
       {typeName === "Switch" &&
         <EditSwitch
           changeConfig={changeConfig}
