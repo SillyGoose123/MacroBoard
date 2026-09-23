@@ -1,4 +1,4 @@
-import type {ConfigOptions} from "@/components/Usb/ConfigEditor/ConfigEditor.tsx";
+import type {ConfigOptions} from "@/components/usb/ConfigEditor/ConfigEditor.tsx";
 import type {Effect} from "@/../bindings/Effect";
 import {Input} from "@/shadcn/components/ui/input.tsx";
 import type {RGB8} from "../../../../../../bindings/RGB8";

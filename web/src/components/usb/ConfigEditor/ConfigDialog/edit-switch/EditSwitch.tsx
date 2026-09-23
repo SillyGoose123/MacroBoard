@@ -1,18 +1,18 @@
-import type {ConfigOptions} from "@/components/Usb/ConfigEditor/ConfigEditor.tsx";
+import type {ConfigOptions} from "@/components/usb/ConfigEditor/ConfigEditor.tsx";
 import {Action} from "@/../bindings/Action.ts";
 import {useCallback} from "react";
 import {Tone} from "@/../bindings/Tone.ts";
-import styles from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditSwitch.module.css"
+import styles from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditSwitch.module.css"
 import {Button} from "@/shadcn/components/ui/button.tsx";
 import {AudioLines, Keyboard, Mouse, Plus, Trash2} from "lucide-react";
 import {Item} from "@/shadcn/components/ui/item";
-import {EditSummerAction} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditSummerAction.tsx";
+import {EditSummerAction} from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditSummerAction.tsx";
 import {Command} from "../../../../../../bindings/Command.ts";
 import {
   EditKeyboardAction
-} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.tsx";
+} from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.tsx";
 import type {SlimKeyReport} from "../../../../../../bindings/SlimKeyReport";
-import {EditMouseAction} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditMouseAction.tsx";
+import {EditMouseAction} from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditMouseAction.tsx";
 import type {MouseReport} from "../../../../../../bindings/MouseReport";
 
 type EditSwitchProps = {

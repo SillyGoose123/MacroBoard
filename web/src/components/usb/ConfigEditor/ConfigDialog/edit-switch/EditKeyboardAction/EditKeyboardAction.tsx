@@ -1,11 +1,11 @@
 import {ArrowBigUp, ArrowBigUpDash, ArrowDown01, Grid2X2, Keyboard, MouseOff} from "lucide-react";
 import type {SlimKeyReport} from "@/../bindings/SlimKeyReport";
 import styles
-  from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.module.css";
+  from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.module.css";
 import {
   EditU8Mapped
-} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditU8MappedProps.tsx";
-import {EditKeycodes} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeycodes.tsx";
+} from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditU8MappedProps.tsx";
+import {EditKeycodes} from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeycodes.tsx";
 
 type EditKeyboardAction = {
   action: SlimKeyReport,

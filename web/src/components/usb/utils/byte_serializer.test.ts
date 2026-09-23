@@ -8,18 +8,19 @@ import {
   rotaryAction,
   summerAction, switchAction,
   u32
-} from "@/components/Usb/utils/byte_serializer.ts";
+} from "@/components/usb/utils/byte_serializer.ts";
 import {Tone} from "../../../../bindings/Tone.ts";
 import type {Config} from "../../../../bindings/Config";
 import type {MouseReport} from "../../../../bindings/MouseReport";
 import type {SlimKeyReport} from "../../../../bindings/SlimKeyReport";
 import {
+  actionBytes,
   configBytes,
   effectBytes, keyActionBytes,
   knobActionBytes, mouseActionBytes,
   rgb8Bytes,
   rotaryActionBytes, switchActionBytes
-} from "@/components/Usb/utils/byte_deserializer.test.ts";
+} from "@/components/usb/utils/byte_deserializer.test.ts";
 
 test("configToBytes", () => {
   expect(configToBytes(config)).toStrictEqual(Uint8Array.from(configBytes));
@@ -30,7 +31,7 @@ test("switchAction", () => {
 });
 
 test("action", () => {
-  expect(action(config.switchAction[0][0])).toStrictEqual(switchActionBytes);
+  expect(action(config.switchAction[0][0])).toStrictEqual(actionBytes);
 });
 
 test("keyAction", () => {
@@ -111,8 +112,8 @@ export const config: Config = {
       type: 2,
       data: {
         pan: 0,
-        y: 1,
         x: 2,
+        y: 1,
         wheel: 0,
         buttons: 0
       }

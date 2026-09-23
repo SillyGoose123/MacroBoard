@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {usbPid, usbVid} from "@/../bindings//const.ts";
-import {updateConfig, initDevice, sendCommand, readConfig} from "@/components/Usb/utils/commands.ts";
+import {updateConfig, initDevice, sendCommand, readConfig} from "@/components/usb/utils/commands.ts";
 import type {Command} from "@/../bindings//Command.ts";
 import type {Config} from "@/../bindings/Config";
 

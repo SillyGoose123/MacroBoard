@@ -1,9 +1,9 @@
-import {useUsb} from "@/components/Usb/useUsb.ts";
+import {useUsb} from "@/components/usb/useUsb.ts";
 import {Button} from "@/shadcn/components/ui/button.tsx";
-import styles from "@/components/Usb/Usb.module.css";
+import styles from "@/components/usb/Usb.module.css";
 import {Backdrop} from "@/shadcn/components/ui/backdrop.tsx";
 import {Spinner} from "@/shadcn/components/ui/spinner.tsx";
-import {ConfigEditor} from "@/components/Usb/ConfigEditor/ConfigEditor.tsx";
+import {ConfigEditor} from "@/components/usb/ConfigEditor/ConfigEditor.tsx";
 
 export function Usb() {
   const {

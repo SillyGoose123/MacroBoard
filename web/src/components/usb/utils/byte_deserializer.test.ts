@@ -1,28 +1,27 @@
 import {expect, test} from 'vitest'
 import {
   getByte,
-  getI8,
-  parseArray,
+  getI8, parseAction,
+  parseArray, parseConfig,
   parseEffect, parseKeyAction, parseKnobAction, parseMouseReport,
   parseRGB8, parseRotaryAction, parseTone,
   type UsbData
-} from "@/components/Usb/utils/byte_deserializer.ts";
-import type {U8Numbers} from "@/components/Usb/utils/byte_serializer.ts";
-import {config} from "@/components/Usb/utils/byte_serializer.test.ts";
+} from "@/components/usb/utils/byte_deserializer.ts";
+import type {U8Numbers} from "@/components/usb/utils/byte_serializer.ts";
+import {config} from "@/components/usb/utils/byte_serializer.test.ts";
 import {Tone} from "../../../../bindings/Tone.ts";
 
 
 test("parseConfig", () => {
-  let pointer = {value: 0};
   let raw = toUsbData(configBytes);
-  expect(parseKeyAction(raw, pointer)).toStrictEqual(config);
+  expect(parseConfig(raw)).toStrictEqual(config);
 });
 
 
 test("parseAction", () => {
   let pointer = {value: 0};
   let raw = toUsbData(actionBytes);
-  expect(parseKeyAction(raw, pointer)).toStrictEqual(config.switchAction[0][0]);
+  expect(parseAction(raw, pointer)).toStrictEqual(config.switchAction[0][0]);
 });
 
 
@@ -97,9 +96,9 @@ export const rgb8Bytes: U8Numbers = [255, 122, 67];
 export const effectBytes: U8Numbers = [1, ...rgb8Bytes, 0, 0, 0, 0];
 export const rotaryActionBytes: U8Numbers = [1, 3, Tone.default, 0];
 export const keyActionBytes: U8Numbers = [0, 1, 0, 0, 0, 0, 0];
-export const switchBytes: U8Numbers = [1, ...keyActionBytes];
+export const switchBytes: U8Numbers = [1, 1, ...keyActionBytes];
 export const knobActionBytes: U8Numbers = [...rotaryActionBytes, ...switchBytes];
 export const mouseActionBytes: U8Numbers = [0, 2, 1, 0, 0];
-export const actionBytes: U8Numbers = [2, 0, 1, 2, 0, 0];
-export const switchActionBytes: U8Numbers = [1, ...actionBytes, 0, 0, 0, 0, 0, 0,]
+export const actionBytes: U8Numbers = [2, ...mouseActionBytes];
+export const switchActionBytes: U8Numbers = [1, ...actionBytes, 0, 0, 0, 0, 0]
 export const configBytes: U8Numbers = [...switchActionBytes, ...knobActionBytes, ...effectBytes];

@@ -1,6 +1,6 @@
 import type {Config} from "@/../bindings/Config"
-import styles from "@/components/Usb/ConfigEditor/ConfigEditor.module.css";
-import {ConfigDialog} from "@/components/Usb/ConfigEditor/ConfigDialog/ConfigDialog.tsx";
+import styles from "@/components/usb/ConfigEditor/ConfigEditor.module.css";
+import {ConfigDialog} from "@/components/usb/ConfigEditor/ConfigDialog/ConfigDialog.tsx";
 import {ConfigType} from "@/components/usb/ConfigEditor/ConfigDialog/ConfigType/ConfigType.tsx";
 import {manufacturer, product} from "@/../bindings/const.ts";
 import {Command} from "@/../bindings/Command.ts";

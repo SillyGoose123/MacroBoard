@@ -55,18 +55,18 @@ impl<T: BytesConvert, const N: usize> BytesConvert for [T; N] {
 }
 
 impl BytesConvert for u32 {
-  fn from_bytes(bytes: &[u8], pointer: &mut usize) -> Self {
-    u32::from_le_bytes([
-      get_byte!(bytes, pointer),
-      get_byte!(bytes, pointer),
-      get_byte!(bytes, pointer),
-      get_byte!(bytes, pointer),
-    ])
-  }
+    fn from_bytes(bytes: &[u8], pointer: &mut usize) -> Self {
+        u32::from_le_bytes([
+            get_byte!(bytes, pointer),
+            get_byte!(bytes, pointer),
+            get_byte!(bytes, pointer),
+            get_byte!(bytes, pointer),
+        ])
+    }
 
-  fn to_bytes(&self) -> Vec<u8> {
-    u32::to_le_bytes(*self).to_vec()
-  }
+    fn to_bytes(&self) -> Vec<u8> {
+        u32::to_le_bytes(*self).to_vec()
+    }
 }
 
 #[macro_export]
@@ -88,4 +88,49 @@ macro_rules! parse_bytes {
             $name::from_bytes($value, &mut pointer)
         }()
     };
+}
+
+#[cfg(all(test, not(target_arch = "arm")))]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn u32_to_bytes() {
+        let input: u32 = 256;
+        assert_eq!(input.to_bytes(), [0, 1, 0, 0])
+    }
+
+    #[test]
+    fn u32_from_bytes() {
+        let input = [0, 1, 0, 0];
+        let mut pointer = 0;
+        assert_eq!(u32::from_bytes(&input, &mut pointer), 256);
+    }
+
+    #[test]
+    fn fixed_slice_to_bytes() {
+        let input: [u8; 4] = [1, 2, 5, 6];
+        assert_eq!(input.to_bytes(), input);
+    }
+
+    #[test]
+    fn fixed_slice_from_bytes() {
+        let input: [u8; 4] = [1, 2, 5, 6];
+        let mut pointer = 0;
+        let output: [u8; 4] = BytesConvert::from_bytes(&input, &mut pointer);
+        assert_eq!(output , input);
+    }
+
+    #[test]
+    fn u8_to_bytes() {
+        let input: u8 = 12;
+        assert_eq!(input.to_bytes(), [12])
+    }
+
+    #[test]
+    fn u8_from_bytes() {
+        let input = [12];
+        let mut pointer = 0;
+        assert_eq!(BytesConvert::from_bytes(&input, &mut pointer), 16);
+    }
 }

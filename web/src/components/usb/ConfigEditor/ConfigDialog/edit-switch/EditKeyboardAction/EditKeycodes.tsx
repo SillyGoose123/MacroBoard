@@ -1,7 +1,7 @@
 import {useCallback, useRef} from "react";
 import type {SlimKeyReport} from "../../../../../../../bindings/SlimKeyReport";
 import styles
-  from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.module.css";
+  from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.module.css";
 import {Input} from "@/shadcn/components/ui/input.tsx";
 
 type EditKeycodesProps = {

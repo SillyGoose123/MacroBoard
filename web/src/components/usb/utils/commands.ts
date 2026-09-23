@@ -1,7 +1,7 @@
 import {Command} from "@/../bindings/Command.ts";
 import type {Config} from "@/../bindings/Config";
-import {parseConfig} from "@/components/Usb/utils/byte_deserializer.ts";
-import {configToBytes} from "@/components/Usb/utils/byte_serializer.ts";
+import {parseConfig} from "@/components/usb/utils/byte_deserializer.ts";
+import {configToBytes} from "@/components/usb/utils/byte_serializer.ts";
 
 const ENDPOINT: number = 3;
 

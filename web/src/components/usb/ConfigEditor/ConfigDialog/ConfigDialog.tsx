@@ -7,15 +7,15 @@ import {
   DialogHeader,
 } from "@/shadcn/components/ui/dialog.tsx";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/shadcn/components/ui/tooltip.tsx";
-import type {ConfigOptions} from "@/components/Usb/ConfigEditor/ConfigEditor.tsx";
-import {ConfigType} from "@/components/Usb/ConfigEditor/ConfigDialog/ConfigType/ConfigType.tsx";
-import {EditLed} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-led/EditLed.tsx";
-import {EditKnob} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-knob/EditKnob.tsx";
-import {EditSwitch} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditSwitch.tsx";
+import type {ConfigOptions} from "@/components/usb/ConfigEditor/ConfigEditor.tsx";
+import {ConfigType} from "@/components/usb/ConfigEditor/ConfigDialog/ConfigType/ConfigType.tsx";
+import {EditLed} from "@/components/usb/ConfigEditor/ConfigDialog/edit-led/EditLed.tsx";
+import {EditKnob} from "@/components/usb/ConfigEditor/ConfigDialog/edit-knob/EditKnob.tsx";
+import {EditSwitch} from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditSwitch.tsx";
 import type {Effect} from "@/../bindings/Effect";
 import type {Action} from "@/../bindings/Action.ts";
 import type {KnobAction} from "@/../bindings/KnobAction";
-import styles from "@/components/Usb/ConfigEditor/ConfigDialog/ConfigDialog.module.css";
+import styles from "@/components/usb/ConfigEditor/ConfigDialog/ConfigDialog.module.css";
 import {Command} from "../../../../../bindings/Command.ts";
 
 type ConfigProps = {

@@ -1,8 +1,8 @@
-import type {ConfigOptions} from "@/components/Usb/ConfigEditor/ConfigEditor.tsx";
+import type {ConfigOptions} from "@/components/usb/ConfigEditor/ConfigEditor.tsx";
 import type {KnobAction} from "@/../bindings/KnobAction";
-import {EditSwitch} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditSwitch.tsx";
+import {EditSwitch} from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditSwitch.tsx";
 import {Item} from "@/shadcn/components/ui/item.tsx";
-import styles from "@/components/Usb/ConfigEditor/ConfigDialog/edit-knob/EditKnob.module.css"
+import styles from "@/components/usb/ConfigEditor/ConfigDialog/edit-knob/EditKnob.module.css"
 import {ArrowBigDownDash, RotateCcw, RotateCw} from "lucide-react";
 import {Command} from "../../../../../../bindings/Command.ts";
 

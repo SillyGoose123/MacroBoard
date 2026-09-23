@@ -2,9 +2,9 @@ import type {MouseReport} from "@/../bindings/MouseReport";
 import {Mouse} from "lucide-react";
 import {
   EditU8Mapped
-} from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditU8MappedProps.tsx";
+} from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditU8MappedProps.tsx";
 import styles
-  from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.module.css";
+  from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.module.css";
 import {Input} from "@/shadcn/components/ui/input";
 
 type EditMouseActionProps = {

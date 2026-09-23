@@ -1,6 +1,6 @@
 import {type ComponentType, useCallback, useMemo} from "react";
 import styles
-  from "@/components/Usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.module.css";
+  from "@/components/usb/ConfigEditor/ConfigDialog/edit-switch/EditKeyboardAction/EditKeyboardAction.module.css";
 import {Toggle} from "@/shadcn/components/ui/toggle.tsx";
 
 type EditU8MappedProps = {
