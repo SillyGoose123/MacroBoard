@@ -13,9 +13,7 @@ const  WEB_URL: &str = "http://localhost:5173/";
 
 #[cfg(not(debug_assertions))]
 #[ts_bind_const]
-const WEB_URL: &str = "https://macro.sillycode.tech";
-
-
+const WEB_URL: &str = "https://sillygoose123.github.io/MacroBoard/";
 
 #[ts_bind_const]
 const MANUFACTURER: &'static str = "SillGoose123 & Leo";
