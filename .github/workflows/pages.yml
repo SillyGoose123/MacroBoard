@@ -46,6 +46,8 @@ jobs:
       - name: Setup repo
         run: just setup
       - name: Build software
+        env:
+          BaseUrl: "/MacroBoard"
         run: just build
 
       - name: Setup Pages
