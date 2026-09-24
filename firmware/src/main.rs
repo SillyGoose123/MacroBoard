@@ -22,7 +22,7 @@ use crate::storage::Storage;
 use crate::summer::summer::summer_handler;
 use crate::summer::tones::Tone;
 use crate::usb::usb::init_usb;
-use defmt::info;
+use defmt::{info};
 use embassy_executor::Spawner;
 use embassy_rp::{bind_interrupts, dma};
 use embassy_rp::gpio::{Input, Pull};

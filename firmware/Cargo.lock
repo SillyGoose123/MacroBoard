@@ -1664,7 +1664,7 @@ dependencies = [
 [[package]]
 name = "ts-bind"
 version = "0.1.7"
-source = "git+https://github.com/SillyGoose123/ts-bind-no-std#21ddb54b9cb82c25215657318c3c0fdd11179eae"
+source = "git+https://github.com/SillyGoose123/ts-bind-no-std#e07ea582883cd62ebf2e3ce7b6dc0fe65a457ee1"
 dependencies = [
  "ts-bind-macros",
 ]
@@ -1672,11 +1672,12 @@ dependencies = [
 [[package]]
 name = "ts-bind-macros"
 version = "0.1.7"
-source = "git+https://github.com/SillyGoose123/ts-bind-no-std#21ddb54b9cb82c25215657318c3c0fdd11179eae"
+source = "git+https://github.com/SillyGoose123/ts-bind-no-std#e07ea582883cd62ebf2e3ce7b6dc0fe65a457ee1"
 dependencies = [
  "anyhow",
  "convert_case",
  "quote",
+ "regex",
  "serde",
  "syn 2.0.119",
  "toml",

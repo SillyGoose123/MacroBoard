@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/firmware/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/models/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/web/test/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/firmware/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/driver/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/web/target" />

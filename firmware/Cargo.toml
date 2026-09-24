@@ -6,7 +6,7 @@ edition = "2024"
 [[bin]]
 name = "firmware"
 path = "src/main.rs"
-test = true
+test = false
 doctest = false
 bench = false
 
