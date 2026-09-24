@@ -32,27 +32,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install rust
+        uses: dtolnay/rust-toolchain@stable
 
-      - name: Setup Just
+      - name: Install rust deps
+        run: sudo apt update && sudo apt install libudev-dev pkg-config
+
+      - name: Setup just
         uses: extractions/setup-just@v3
 
       - name: Setup repo
         run: just setup
-
       - name: Build software
         run: just build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload build
           path: './build'
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
