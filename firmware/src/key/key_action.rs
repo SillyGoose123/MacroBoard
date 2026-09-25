@@ -89,8 +89,8 @@ impl BytesConvert for MouseReport {
 
 #[derive(Clone, Copy, TsBind)]
 pub struct SlimKeyReport {
-    pub modifier: u8,
-    pub keycodes: [u8; 6],
+  pub modifier: u8,
+  pub keycodes: [u8; 6],
 }
 
 impl BytesConvert for SlimKeyReport {

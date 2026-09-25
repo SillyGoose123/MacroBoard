@@ -43,6 +43,7 @@ embedded-alloc = "0.7.0"
 embassy-usb = { version = "0.6.0", features = ["defmt"] }
 usbd-hid = "0.10.2" # This version is required to be compatible with embassy-usb
 
+
 # Leds
 smart-leds = "0.4"
 
