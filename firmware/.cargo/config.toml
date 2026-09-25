@@ -14,7 +14,7 @@ rustflags = [
 
 # run cargo clean after changing
 [env]
-DEFMT_LOG = "trace"
+DEFMT_LOG = "info"
 
 [alias]
 deploy = "run --config target.thumbv6m-none-eabi.runner=\"elf2uf2-rs\""

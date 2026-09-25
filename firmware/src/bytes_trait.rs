@@ -13,7 +13,7 @@ impl<T: BytesConvert> BytesConvert for Vec<T> {
         let length: usize = get_byte!(bytes, pointer) as usize;
         let mut elements = Vec::new();
 
-        for _ in 1..length {
+        for _ in 0..length {
             let thing = T::from_bytes(bytes, pointer);
             elements.push(thing);
         }

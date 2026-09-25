@@ -10,18 +10,33 @@ import {useCallback} from "react";
 import type {Action} from "@/../bindings/Action.ts";
 import type {KnobAction} from "@/../bindings/KnobAction";
 import type {Effect} from "@/../bindings/Effect";
-import {RefreshCcw, Save} from "lucide-react";
+import {RefreshCcw, Save, Trash} from "lucide-react";
 
 type ConfigEditorProps = {
   config: Config;
   executeCommand: (command: Command, data: number[], silent: boolean) => Promise<void>,
   wasChanged: boolean,
   save: () => Promise<void>,
-  reset: () => Promise<void>,
+  reload: () => Promise<void>,
   changeConfig: (config: Config) => void,
   error: string | null,
 }
 export type ConfigOptions = Action[] | KnobAction | Effect;
+
+const EMPTY_CONFIG: Config = {
+  switchAction: [[], [], [], [], [], []],
+  knobAction: {
+    rotaryAction: {
+      minus: [],
+      plus: []
+    },
+    switch: [],
+  },
+  effect: {
+    colors: [],
+    timeDiff: 0,
+  },
+};
 
 //TODO: REFACTOR
 export function ConfigEditor({
@@ -30,7 +45,7 @@ export function ConfigEditor({
                                wasChanged,
                                save,
                                changeConfig,
-                               reset,
+                               reload,
                                error
                              }: ConfigEditorProps) {
   const topLevelUpdate = useCallback((changes: ConfigOptions) => {
@@ -55,14 +70,14 @@ export function ConfigEditor({
       />
 
       {[...Array(2)].map((_, i) => (
-          <ConfigDialog type={ConfigType.Switch}
-                        config={config.switchAction[i]}
-                        changeConfig={(newConfig) => {
-                          switchUpdate(newConfig, i)
-                        }}
-                        key={`switch-${i}`}
-                        executeCommand={executeCommand}
-          />
+        <ConfigDialog type={ConfigType.Switch}
+                      config={config.switchAction[i + 4]}
+                      changeConfig={(newConfig) => {
+                        switchUpdate(newConfig, i + 4)
+                      }}
+                      key={`switch-${(i + 4)}`}
+                      executeCommand={executeCommand}
+        />
       ))}
 
       <div onClick={() => executeCommand(Command.summ, [Tone.default], true)}>
@@ -72,58 +87,61 @@ export function ConfigEditor({
 
     <div className={styles.row}>
       <ConfigDialog
-          type={ConfigType.LED}
-          config={config.effect}
-          changeConfig={topLevelUpdate}
-          executeCommand={executeCommand}
+        type={ConfigType.LED}
+        config={config.effect}
+        changeConfig={topLevelUpdate}
+        executeCommand={executeCommand}
       />
 
       {[...Array(4)].map((_, i) => (
-          <ConfigDialog type={ConfigType.Switch}
-                        config={config.switchAction[i + 2]}
-                        changeConfig={(newConfig) => {
-                          switchUpdate(newConfig, i + 2)
-                        }}
-                        key={`switch-${(i + 2)}`}
-                        executeCommand={executeCommand}
-          />
+        <ConfigDialog type={ConfigType.Switch}
+                      config={config.switchAction[i]}
+                      changeConfig={(newConfig) => {
+                        switchUpdate(newConfig, i)
+                      }}
+                      key={`switch-${i}`}
+                      executeCommand={executeCommand}
+        />
       ))}
       <ConfigDialog
-          type={ConfigType.LED}
-          config={config.effect}
-          changeConfig={topLevelUpdate}
-          executeCommand={executeCommand}
+        type={ConfigType.LED}
+        config={config.effect}
+        changeConfig={topLevelUpdate}
+        executeCommand={executeCommand}
       />
     </div>
     <div className={styles.row}>
       <ConfigDialog
-          type={ConfigType.LED}
-          config={config.effect}
-          changeConfig={topLevelUpdate}
-          executeCommand={executeCommand}
+        type={ConfigType.LED}
+        config={config.effect}
+        changeConfig={topLevelUpdate}
+        executeCommand={executeCommand}
       />
       <span>Created by {manufacturer}</span>
       <ConfigDialog
-          type={ConfigType.LED}
-          config={config.effect}
-          changeConfig={topLevelUpdate}
-          executeCommand={executeCommand}
+        type={ConfigType.LED}
+        config={config.effect}
+        changeConfig={topLevelUpdate}
+        executeCommand={executeCommand}
       />
       <span>{product}</span>
       <ConfigDialog
-          type={ConfigType.LED}
-          config={config.effect}
-          changeConfig={topLevelUpdate}
-          executeCommand={executeCommand}
+        type={ConfigType.LED}
+        config={config.effect}
+        changeConfig={topLevelUpdate}
+        executeCommand={executeCommand}
       />
     </div>
 
     <div className={styles.row}>
-      <Button className={styles.action} disabled={!wasChanged} onClick={reset} variant={"outline"}>
+      <Button className={styles.action} disabled={!wasChanged} onClick={reload} variant={"outline"}>
         <RefreshCcw strokeWidth={1.75}/>
       </Button>
       <Button className={styles.action} disabled={!wasChanged} onClick={save} variant={"outline"}>
         <Save strokeWidth={1.75}/>
+      </Button>
+      <Button className={styles.action} disabled={JSON.stringify(config) === JSON.stringify(EMPTY_CONFIG)} onClick={() => changeConfig(EMPTY_CONFIG)} variant={"outline"}>
+        <Trash strokeWidth={1.75}/>
       </Button>
     </div>
   </div>

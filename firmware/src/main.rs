@@ -91,16 +91,12 @@ async fn main(spawner: Spawner) {
     init_switches(
         spawner,
         [
-            Input::new(rp.PIN_3, Pull::None),
-            Input::new(rp.PIN_4, Pull::None),
-            Input::new(rp.PIN_2, Pull::None),
-            Input::new(rp.PIN_1, Pull::None),
-            Input::new(rp.PIN_0, Pull::None),
-            if cfg!(feature = "XIAO") {
-                Input::new(rp.PIN_29, Pull::None)
-            } else {
-                Input::new(rp.PIN_5, Pull::None)
-            },
+            Input::new(rp.PIN_3, Pull::Up),
+            Input::new(rp.PIN_4, Pull::Up),
+            Input::new(rp.PIN_2, Pull::Up),
+            Input::new(rp.PIN_1, Pull::Up),
+            Input::new(rp.PIN_0, Pull::Up),
+            Input::new(rp.PIN_29, Pull::Up)
         ],
     );
     info!("Init switches!");

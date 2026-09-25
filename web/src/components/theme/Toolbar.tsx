@@ -8,7 +8,7 @@ export const Toolbar = () => {
   const {theme, setTheme} = useTheme();
   return <div className={styles.toolbar}>
     <Button
-      onClick={() => window.open(baseUrl + "/firmware.uf2")}
+      onClick={() => window.open(baseUrl + "firmware.uf2")}
       size="icon"
       aria-label="Submit"
       variant="ghost"

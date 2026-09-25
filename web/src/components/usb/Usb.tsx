@@ -16,19 +16,19 @@ export function Usb() {
     save,
     wasChanged,
     changeConfig,
-    reset
+    reload
   } = useUsb();
 
   return (<div className={styles.fullscreen}>
         {
-          isAvailable && config != null
+          isAvailable && config != null && error == null
               ? <ConfigEditor
                   config={config}
                   executeCommand={executeCommand}
                   wasChanged={wasChanged}
                   changeConfig={changeConfig}
                   save={save}
-                  reset={reset}
+                  reload={reload}
                   error={error}
               />
               : <CheckUsb check={check} error={error}/>

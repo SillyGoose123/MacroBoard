@@ -24,8 +24,11 @@ export function useUsb() {
       return;
     }
 
-    await sendCommand(device, command, Uint8Array.from(data))
-
+    try {
+      await sendCommand(device, command, Uint8Array.from(data))
+    } catch (e: any) {
+      setError(e.toString())
+    }
     setIsLoading(false);
   }, [device])
 
@@ -33,9 +36,13 @@ export function useUsb() {
     setIsLoading(true);
     setError(null);
 
-    if (device != null) {
-      await device.close()
-      setDevice(null);
+    try {
+      if (device != null) {
+        await device.close()
+        setDevice(null);
+      }
+    } catch (e) {
+      //
     }
 
     if (navigator.usb == undefined) {
@@ -48,8 +55,8 @@ export function useUsb() {
       setIsLoading(true);
       try {
         setConfig(await initDevice(value));
-      } catch (error) {
-        setError(error as string);
+      } catch (error: any) {
+        setError(error.toString());
         setIsLoading(false);
         setDevice(null);
         return;
@@ -100,15 +107,15 @@ export function useUsb() {
 
     try {
       await updateConfig(device, config);
-    } catch (e) {
-      setError(e as string);
+    } catch (e: any) {
+      setError(e.toString());
     }
 
 
     setIsLoading(false)
   }, [config]);
 
-  const reset = useCallback(async () => {
+  const reload = useCallback(async () => {
     setIsLoading(true);
     if (!device) {
       setError("Can't execute with no device!");
@@ -120,8 +127,8 @@ export function useUsb() {
       let config = await readConfig(device);
       setConfig(config);
       setWasChanged(false);
-    } catch (e) {
-      setError(e as string);
+    } catch (e: any) {
+      setError(e.toString());
     }
 
     setIsLoading(false);
@@ -137,6 +144,6 @@ export function useUsb() {
     wasChanged,
     changeConfig,
     save,
-    reset
+    reload
   }
 }

@@ -3,9 +3,10 @@
 ## 1 section
 Command
 
-Config = 0x00,
-Flash = 0x01,
-Summ = 0x02,
+ChangeConfig = 0x01,
+GetConfig = 0x02,
+Flash = 0x03,
+Summ = 0x04,
 
 
 ## Flash sections

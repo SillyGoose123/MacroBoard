@@ -12,6 +12,9 @@
 @buildWeb:
   cd web && bun run build
 
+@deployDev:
+  cd firmware && cargo deploy
+  cp "firmware/target/thumbv6m-none-eabi/debug/firmware.uf2" "D:/"
 
 [parallel]
 @dev: firmware web

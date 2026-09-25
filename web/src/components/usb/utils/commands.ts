@@ -31,11 +31,11 @@ export async function readConfig(device: USBDevice): Promise<Config> {
   if (result.status !== "ok"
       || result.data == undefined
       || result.data.getUint8(0) !== 0)
-    throw "Getting ConfigEditor failed!";
+    throw "Getting config failed!";
 
   let configLength = result.data.getUint32(1, true);
   let config = await device.transferIn(ENDPOINT, configLength)
-  if (config.status !== "ok" || result.data == undefined) throw "Reading ConfigEditor failed!";
+  if (config.status !== "ok" || result.data == undefined) throw "Reading config failed!";
   return parseConfig(config.data!);
 }
 

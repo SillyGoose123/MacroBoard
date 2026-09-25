@@ -6,6 +6,7 @@ use crate::usb::{DEVICE_INTERFACE_GUIDS, WEB_URL};
 use crate::{CONFIG, FLASH_CHANNEL, SUMMER_CHANNEL, byte_enum, mk_static, parse_bytes};
 use alloc::vec;
 use alloc::vec::Vec;
+use defmt::info;
 use embassy_executor::{Spawner, task};
 use embassy_rp::peripherals::USB;
 use embassy_rp::usb::{Driver, Endpoint as UsbEndpoint, In, Out};
@@ -49,13 +50,15 @@ async fn web_usb_task(
     loop {
         read_ep.wait_enabled().await;
 
+        //problem too many bytes?
         let mut data = [0; 64];
         while let Ok(data_size) = read_ep.read(data.as_mut()).await {
-            defmt::info!("web_usb_task: read {} bytes", data_size);
+            info!("web_usb_task: got {} bytes", data_size);
             if data_size == 0 {
                 continue;
             }
-            defmt::info!("web_usb_task: first byte is {}", data[0]);
+            info!("web_usb_task: first byte is {}", data[0]);
+            info!("web_usb_task: bytes: {}", data);
 
             let command = Command::from_bytes(data[0]);
             if command.is_err() {
@@ -104,15 +107,15 @@ impl Command {
                 }
             }
             Command::GetConfig => {
-                defmt::info!("get_config");
+                info!("get_config");
                 let guard = CONFIG.lock().await;
                 let mut bytes = vec![0];
                 let config_bytes = guard.as_ref().unwrap().to_bytes();
                 //cast to u32 is safe because this is a 32byte system
                 //the length of config is appended to for the frontend to easily read the config
-                bytes.extend((config_bytes.len() as u32).to_bytes());
+                bytes.extend((config_bytes.len() as u32).to_le_bytes());
                 bytes.extend(config_bytes);
-                defmt::info!("web_usb_task: read config bytes: {:?}", &bytes.as_slice());
+                info!("web_usb_task: read config bytes: {:?}", &bytes.as_slice());
                 bytes
             }
         }
