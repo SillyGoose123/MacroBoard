@@ -1,0 +1,8 @@
+{
+  "downloadFirmware": "Firmware für Board herunterladen",
+  "checkForBoard": "Nach MacroBoard suchen",
+  "browserIncompatible": "Browser ist nicht kompatibel!",
+  "unableToBeep": "MacroBoard: Piep ist fehlgeschlagen!",
+  "unableToFlash": "MacroBoard: Flash ist fehlgeschlagen!",
+  "storeConfigFailed": "MacroBoard: Config speichern fehlgeschlagen!",
+}

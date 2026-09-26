@@ -1,14 +1,19 @@
-import {ThemeProvider} from "@/components/theme/ThemeProvider.tsx";
-import {Toolbar} from "@/components/theme/Toolbar.tsx";
+import {Toolbar} from "@/components/toolbar/Toolbar.tsx";
 import {Usb} from "@/components/usb/Usb.tsx";
-import {TooltipProvider} from "@/shadcn/components/ui/tooltip.tsx";
+import {ThemeProvider} from "@/components/ThemeProvider.tsx";
+import {TranslationProvider} from "@/components/TranslationProvider.tsx";
+import {TooltipProvider} from "@/shadcn/ui/tooltip.tsx";
 
 export default function App() {
   return (
-      <ThemeProvider storageKey="vite-ui-theme">
+    <ThemeProvider storageKey="theme">
+      <TranslationProvider storageKey="lang">
         <TooltipProvider>
-          <Toolbar/>
-          <Usb/>
+          <Toolbar>
+            <Usb/>
+          </Toolbar>
         </TooltipProvider>
-      </ThemeProvider>);
+      </TranslationProvider>
+    </ThemeProvider>
+  );
 }

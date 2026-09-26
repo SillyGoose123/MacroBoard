@@ -1,0 +1,8 @@
+{
+  "downloadFirmware": "Download firmware for board",
+  "checkForBoard": "Check for MacroBoard",
+  "browserIncompatible": "Browser is incompatible!",
+  "unableToBeep": "MacroBoard: Failed to beep!",
+  "unableToFlash": "MacroBoard: Failed to flash!",
+  "storeConfigFailed": "MacroBoard: Failed to store config!"
+}

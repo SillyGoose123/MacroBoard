@@ -33,7 +33,6 @@ use embassy_rp::pwm::{Config as PWMConfig, Pwm};
 use embassy_sync::blocking_mutex::raw::ThreadModeRawMutex;
 use embassy_sync::channel::Channel;
 use embassy_sync::mutex::Mutex;
-use embassy_time::Timer;
 use embedded_alloc::LlffHeap as Heap;
 use usbd_hid::descriptor::MouseReport;
 

@@ -16,6 +16,10 @@
   cd firmware && cargo deploy
   cp "firmware/target/thumbv6m-none-eabi/debug/firmware.uf2" "D:/"
 
+@deploy:
+  cd firmware && cargo deploy --release
+  cp "firmware/target/thumbv6m-none-eabi/release/firmware.uf2" "D:/"
+
 [parallel]
 @dev: firmware web
 @firmware:

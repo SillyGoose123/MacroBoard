@@ -1,149 +1,84 @@
-import {useCallback, useEffect, useState} from "react";
-import {usbPid, usbVid} from "@/../bindings//const.ts";
-import {updateConfig, initDevice, sendCommand, readConfig} from "@/components/usb/utils/commands.ts";
-import type {Command} from "@/../bindings//Command.ts";
-import type {Config} from "@/../bindings/Config";
+import {useCallback, useState} from "react";
+import {initDevice} from "@/components/usb/usb-logic/commands.ts";
+import {
+  beep as beepCmd,
+  flash as flashCmd,
+  readConfig as readConfigCmd,
+  updateConfig
+} from "@/components/usb/usb-logic/commands.ts";
+import type {Tone} from "../../../bindings/Tone.ts";
+import {handleCatch} from "@/utils.ts";
+import {useTranslation} from "@/components/TranslationProvider.tsx";
+import type {Flash} from "../../../bindings/Flash";
+import type {Config} from "../../../bindings/Config";
 
-const filters = [
-  {vendorId: usbVid, productId: usbPid}
-];
+export type useUsbReturnType = {
+  isLoading: boolean;
+  deviceConnected: boolean;
+  check: () => Promise<void>;
+  beep: (tone: Tone) => void;
+  flash: (flash: Flash) => void;
+  readConfig: () => Promise<Config>;
+  sendConfig: (config: Config) => Promise<void>;
+};
 
-export function useUsb() {
+export function useUsb(): useUsbReturnType {
+  const {t} = useTranslation();
   const [device, setDevice] = useState<null | USBDevice>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [config, setConfig] = useState<Config | null>(null);
-  const [wasChanged, setWasChanged] = useState<boolean>(false);
-
-  const executeCommand = useCallback(async (command: Command, data: number[], silent: boolean) => {
-    setIsLoading(!silent && true);
-
-    if (!device) {
-      setError("Can't execute with no device!");
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      await sendCommand(device, command, Uint8Array.from(data))
-    } catch (e: any) {
-      setError(e.toString())
-    }
-    setIsLoading(false);
-  }, [device])
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const check = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
+    setLoading(true);
     try {
-      if (device != null) {
-        await device.close()
-        setDevice(null);
-      }
-    } catch (e) {
-      //
+      setDevice(await initDevice());
+    } catch (error: unknown) {
+      handleCatch(error);
     }
+    setLoading(false);
+  }, []);
 
-    if (navigator.usb == undefined) {
-      setError("Browser incompatible")
-      setIsLoading(false);
-      return;
-    }
-
-    navigator.usb.requestDevice({filters}).then(async value => {
-      setIsLoading(true);
-      try {
-        setConfig(await initDevice(value));
-      } catch (error: any) {
-        setError(error.toString());
-        setIsLoading(false);
-        setDevice(null);
-        return;
-      }
-
-      setDevice(value);
-      setIsLoading(false);
-    }).catch((err: Error) => {
-      console.error(err);
-      setError(err.message);
-      setDevice(null);
-      setIsLoading(false);
+  const beep = useCallback((tone: Tone) => {
+    if (device == null) throw "No device!";
+    beepCmd(device, tone).catch(handleCatch).then((value) => {
+      if (value) return;
+      handleCatch(t("unableToBeep"))
     });
   }, [device]);
 
-  const close = useCallback(async () => {
-    if (device == null) return;
-    setIsLoading(true);
-    await device.close();
-    setDevice(null);
-    setError(null);
-    setIsLoading(false);
-  }, [device])
+  const flash = useCallback((flash: Flash) => {
+    if (device == null) throw "No device!";
+    flashCmd(device, flash).catch(handleCatch).then((value) => {
+      if (value) return;
+      handleCatch(t("unableToFlash"))
+    });
+  }, [device]);
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", async () => {
-      await close();
-    })
-  }, []);
+  const readConfig = useCallback(async () => {
+    if (device == null) throw "No device!";
+    setLoading(true);
+    let config = await readConfigCmd(device);
+    setLoading(false);
+    return config;
+  }, [device]);
 
-  const changeConfig = (config: Config) => {
-    setConfig({...config});
-    setWasChanged(true)
-  }
-
-  const save = useCallback(async () => {
-    setIsLoading(true)
-    if (!device || !config || !wasChanged) {
-      setError(!device
-          ? "Can't execute with no device!"
-          : !config
-              ? "Cant update an non existing config!"
-              : "Skipping save of unsaved config!"
-      );
-      setIsLoading(false);
-      return;
-    }
-
+  const sendConfig = useCallback(async (config: Config) => {
+    if (device == null) throw "No device!";
+    setLoading(true);
     try {
-      await updateConfig(device, config);
-    } catch (e: any) {
-      setError(e.toString());
+      if (!await updateConfig(device, config)) handleCatch(t("storeConfigFailed"));
+    } catch (error: unknown) {
+      handleCatch(error);
     }
-
-
-    setIsLoading(false)
-  }, [config]);
-
-  const reload = useCallback(async () => {
-    setIsLoading(true);
-    if (!device) {
-      setError("Can't execute with no device!");
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      let config = await readConfig(device);
-      setConfig(config);
-      setWasChanged(false);
-    } catch (e: any) {
-      setError(e.toString());
-    }
-
-    setIsLoading(false);
-  }, [device])
+    setLoading(false);
+  }, [device]);
 
   return {
-    check,
-    isAvailable: device != null,
     isLoading,
-    error,
-    executeCommand,
-    config,
-    wasChanged,
-    changeConfig,
-    save,
-    reload
+    deviceConnected: device == null,
+    check,
+    beep,
+    flash,
+    readConfig,
+    sendConfig
   }
 }
