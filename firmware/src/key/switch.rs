@@ -1,7 +1,7 @@
-use crate::key::key_action::execute_actions;
 use crate::{CONFIG};
 use embassy_executor::{Spawner, task};
 use embassy_rp::gpio::{Input};
+use crate::action::execute_actions;
 
 #[task(pool_size = 6)]
 async fn switch_check(index: usize, mut input: Input<'static>) {

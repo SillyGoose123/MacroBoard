@@ -1,4 +1,4 @@
-use crate::{MOUSE_CHANNEL, mk_static};
+use crate::{mk_static, MOUSE_CHANNEL};
 use embassy_executor::{Spawner, task};
 use embassy_rp::peripherals::USB;
 use embassy_rp::usb::Driver;

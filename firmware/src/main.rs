@@ -11,6 +11,7 @@ mod macros;
 mod storage;
 mod summer;
 mod usb;
+mod action;
 
 use crate::config::Config;
 use crate::key::key_action::SlimKeyReport;

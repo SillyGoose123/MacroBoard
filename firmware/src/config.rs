@@ -1,11 +1,11 @@
 use crate::bytes_trait::BytesConvert;
-use crate::key::key_action::Action;
 use crate::knob::knob_action::KnobAction;
 use crate::led::Effect;
 use crate::{STORAGE, parse_bytes};
 use alloc::vec::Vec;
 use embassy_rp::flash::Error;
 use ts_bind::TsBind;
+use crate::action::Action;
 
 #[derive(TsBind, Default, Clone)]
 pub struct Config {

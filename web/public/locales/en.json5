@@ -4,5 +4,13 @@
   "browserIncompatible": "Browser is incompatible!",
   "unableToBeep": "MacroBoard: Failed to beep!",
   "unableToFlash": "MacroBoard: Failed to flash!",
-  "storeConfigFailed": "MacroBoard: Failed to store config!"
+  "storeConfigFailed": "MacroBoard: Failed to store config!",
+  "MCU": "Microcontroller",
+  "LED": "LEDs",
+  "summer": "summer",
+  "Knob": "Knob",
+  "Switch": "Switch",
+  "Edit": "Edit {{type}} {num}:",
+  "ConfigDialogDescription": "This dialog contains elements for changing the {{type}} configuration.",
+  "createdBy": "Created by {manufacturer}"
 }

@@ -1,7 +1,7 @@
 use crate::bytes_trait::BytesConvert;
-use crate::key::key_action::Action;
 use alloc::vec::Vec;
 use ts_bind::TsBind;
+use crate::action::Action;
 
 #[derive(TsBind, Default, Clone)]
 pub struct KnobAction {

@@ -1,7 +1,7 @@
 use crate::CONFIG;
-use crate::key::key_action::execute_actions;
 use embassy_executor::{Spawner, task};
 use embassy_rp::gpio::Input;
+use crate::action::execute_actions;
 
 #[task]
 async fn knob_switch(mut input: Input<'static>) {

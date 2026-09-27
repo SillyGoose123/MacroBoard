@@ -4,7 +4,7 @@ use alloc::vec::Vec;
 use smart_leds::RGB8;
 use ts_bind::TsBind;
 
-#[derive(TsBind)]
+#[derive(TsBind, Copy, Clone)]
 pub struct Flash {
     pub rgb: RGB8,
     pub duration: u8,

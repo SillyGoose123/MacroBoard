@@ -74,7 +74,7 @@ export function useUsb(): useUsbReturnType {
 
   return {
     isLoading,
-    deviceConnected: device == null,
+    deviceConnected: device != null,
     check,
     beep,
     flash,

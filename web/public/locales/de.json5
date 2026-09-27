@@ -5,4 +5,12 @@
   "unableToBeep": "MacroBoard: Piep ist fehlgeschlagen!",
   "unableToFlash": "MacroBoard: Flash ist fehlgeschlagen!",
   "storeConfigFailed": "MacroBoard: Config speichern fehlgeschlagen!",
+  "MCU": "Microchip",
+  "LED": "LEDs",
+  "summer": "Pieper",
+  "Knob": "Drehregler",
+  "Switch": "Taster",
+  "Edit": "{{type}} {num} editieren:",
+  "ConfigDialogDescription": "Dieser Dialog enthält Elemente um die {{type}} Konfiguration zu bearbeiten.",
+  "createdBy": "Erstellt von {manufacturer}"
 }

@@ -39,7 +39,7 @@ export function parseAction(raw: UsbData, pointer: Pointer): Action {
       return {type: byte as 3, data: parseTone(raw, pointer)}
 
     default:
-      throw "Invalid action at offset " + pointer + " found!";
+      throw "Invalid actionbutton at offset " + pointer + " found!";
   }
 }
 
