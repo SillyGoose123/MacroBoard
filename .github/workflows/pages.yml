@@ -47,7 +47,7 @@ jobs:
         run: just setup
       - name: Build software
         env:
-          BaseUrl: "/MacroBoard"
+          BaseUrl: "/MacroBoard/"
         run: just build
 
       - name: Setup Pages
