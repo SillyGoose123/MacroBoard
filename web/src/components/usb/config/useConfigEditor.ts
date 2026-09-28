@@ -1,7 +1,8 @@
 import type {useUsbReturnType} from "@/components/usb/useUsb.ts";
 import {useCallback, useEffect, useState} from "react";
-import type {Config} from "@/../bindings/Config";
+import type {Config} from "@bindings/Config";
 import {DEFAULT_CONFIG, isDefaultConfig, jsonEqual} from "@/components/usb/config/configLogic.ts";
+import {handleCatch} from "@/utils.ts";
 
 export type UsbHookProps = Pick<useUsbReturnType, "beep" | "flash" | "readConfig" | "sendConfig">;
 
@@ -10,10 +11,12 @@ export function useConfigEditor({readConfig, sendConfig}: UsbHookProps) {
   const [config, setConfig] = useState<Config | null>(null);
 
   useEffect(() => {
-    readConfig().then(value => {
-      setConfig(value);
-      setLoaded(value);
-    });
+    readConfig()
+      .then((val) => {
+        setLoaded(val);
+        setConfig(val);
+      })
+      .catch(handleCatch);
   }, []);
 
   const wasStored = () => jsonEqual(loaded, config);
@@ -25,9 +28,11 @@ export function useConfigEditor({readConfig, sendConfig}: UsbHookProps) {
     setConfig(loaded);
   }, [loaded]);
 
-  const store = useCallback(() => {
+  const store = useCallback(async () => {
     if(!config) return;
-    sendConfig(config).then();
+    let wasStored = await sendConfig(config);
+    if(wasStored) setLoaded(config) ;
+    return wasStored;
   }, [config]);
 
   const changeConfig = useCallback((newConfig: Config) => {

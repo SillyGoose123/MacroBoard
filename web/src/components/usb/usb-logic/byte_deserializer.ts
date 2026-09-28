@@ -1,12 +1,12 @@
-import type {Config} from "@/../bindings/Config";
-import {type Action, Action as ActionEnum} from "@/../bindings/Action";
-import type {SlimKeyReport} from "@/../bindings/SlimKeyReport";
-import type {MouseReport} from "@/../bindings/MouseReport";
-import {Tone} from "@/../bindings/Tone.ts";
-import type {RotaryAction} from "@/../bindings/RotaryAction";
-import type {KnobAction} from "@/../bindings/KnobAction";
-import type {Effect} from "@/../bindings/Effect";
-import type {RGB8} from "@/../bindings/RGB8";
+import type {Config} from "@bindings/Config";
+import {type Action, Action as ActionEnum} from "@bindings/Action";
+import type {SlimKeyReport} from "@bindings/SlimKeyReport";
+import type {MouseReport} from "@bindings/MouseReport";
+import {Tone} from "@bindings/Tone.ts";
+import type {RotaryAction} from "@bindings/RotaryAction";
+import type {KnobAction} from "@bindings/KnobAction";
+import type {Effect} from "@bindings/Effect";
+import type {RGB8} from "@bindings/RGB8";
 
 export type UsbData = DataView<ArrayBufferLike>;
 export type Pointer = {value: number};
@@ -39,7 +39,7 @@ export function parseAction(raw: UsbData, pointer: Pointer): Action {
       return {type: byte as 3, data: parseTone(raw, pointer)}
 
     default:
-      throw "Invalid actionbutton at offset " + pointer + " found!";
+      throw "Invalid action-button at offset " + pointer + " found!";
   }
 }
 

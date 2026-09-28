@@ -29,7 +29,6 @@ async fn hid_key_task(hid: HidReaderWriter<'static, Driver<'static, USB>, 1, 8>)
     writer.ready().await;
 
     loop {
-        info!("write");
         let report: SlimKeyReport = KEY_CHANNEL.receive().await;
         writer
             .write(&report.create_report())

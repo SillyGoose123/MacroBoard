@@ -23,12 +23,13 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "forceConsistentCasingInFileNames": false,
+    "forceConsistentCasingInFileNames": true,
 
     /* Shadcn */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@bindings/*": ["bindings/*"]
     }
   },
   "include": [

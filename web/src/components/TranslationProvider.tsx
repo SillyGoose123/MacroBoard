@@ -8,7 +8,7 @@ type TranslationProviderProps = {
   storageKey?: string;
 };
 
-type LocaleMap = Record<string, string | null>;
+type LocaleMap = Record<string, string | undefined | null>;
 
 type TranslationProviderState = {
   lang: string;

@@ -1,13 +1,13 @@
-import {Command} from "@/../bindings/Command.ts";
-import type {Config} from "@/../bindings/Config";
+import {Command} from "@bindings/Command.ts";
+import type {Config} from "@bindings/Config";
 import {parseConfig} from "./byte_deserializer.ts";
 import {configToBytes, flashToBytes} from "./byte_serializer.ts";
-import {usbPid, usbVid} from "../../../../bindings/const.ts";
-import type {Tone} from "../../../../bindings/Tone.ts";
-import type {Flash} from "../../../../bindings/Flash";
+import {usbPid, usbVid} from "@bindings/const.ts";
+import type {Tone} from "@bindings/Tone.ts";
+import type {Flash} from "@bindings/Flash";
 
 const ENDPOINT: number = 3;
-const filters: USBDeviceRequestOptions = {
+export const filters: USBDeviceRequestOptions = {
   filters: [
     {vendorId: usbVid, productId: usbPid}
   ]
@@ -24,8 +24,7 @@ async function sendCommand(device: USBDevice, command: Command, numbers: Uint8Ar
   return result.data.getUint8(0) === 0;
 }
 
-export async function initDevice(): Promise<USBDevice> {
-  let device = await navigator.usb.requestDevice(filters);
+export async function initDevice(device: USBDevice): Promise<USBDevice> {
   await device.open();
   if (device.configuration === null) await device.selectConfiguration(0);
   await device.claimInterface(3);
@@ -59,3 +58,4 @@ export async function readConfig(device: USBDevice): Promise<Config> {
 export async function updateConfig(device: USBDevice, config: Config): Promise<boolean> {
   return sendCommand(device, Command.changeConfig, configToBytes(config));
 }
+

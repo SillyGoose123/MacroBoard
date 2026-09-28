@@ -1,11 +1,11 @@
-import type {Config} from "@/../bindings/Config";
-import {Action as ActionEnum, type Action} from "@/../bindings/Action";
-import type {KnobAction} from "@/../bindings/KnobAction";
-import type {Effect} from "@/../bindings/Effect";
-import type {SlimKeyReport} from "@/../bindings/SlimKeyReport";
-import type {MouseReport} from "@/../bindings/MouseReport";
-import type {Tone} from "@/../bindings/Tone.ts";
-import type {RotaryAction} from "@/../bindings/RotaryAction";
+import type {Config} from "@bindings/Config";
+import {Action as ActionEnum, type Action} from "@bindings/Action";
+import type {KnobAction} from "@bindings/KnobAction";
+import type {Effect} from "@bindings/Effect";
+import type {SlimKeyReport} from "@bindings/SlimKeyReport";
+import type {MouseReport} from "@bindings/MouseReport";
+import type {Tone} from "@bindings/Tone.ts";
+import type {RotaryAction} from "@bindings/RotaryAction";
 import type {RGB8} from "../../../../bindings/RGB8";
 import type {Flash} from "../../../../bindings/Flash";
 

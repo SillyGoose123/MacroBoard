@@ -1,6 +1,6 @@
 import {useUsb} from "./useUsb.ts";
 import {ConfigEditor} from "@/components/usb/config/ConfigEditor.tsx";
-import {CheckButton} from "@/components/usb/checkbutton/CheckButton.tsx";
+import {CheckButton} from "@/components/usb/check-button/CheckButton.tsx";
 import {Loader} from "@/components/Loader.tsx";
 
 export function Usb() {

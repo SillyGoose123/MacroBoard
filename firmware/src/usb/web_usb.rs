@@ -53,17 +53,17 @@ async fn web_usb_task(
         //problem too many bytes?
         let mut data = [0; 64];
         while let Ok(data_size) = read_ep.read(data.as_mut()).await {
-            info!("web_usb_task: got {} bytes", data_size);
             if data_size == 0 {
                 continue;
             }
-            info!("web_usb_task: first byte is {}", data[0]);
             info!("web_usb_task: bytes: {}", data);
 
             let command = Command::from_bytes(data[0]);
             if command.is_err() {
                 continue;
             }
+
+            info!("--------------");
 
             let _ = write_ep
                 .write(
@@ -90,14 +90,6 @@ byte_enum!(
 impl Command {
     async fn execute(self, data: &[u8]) -> Vec<u8> {
         match self {
-            Command::Flash => {
-                FLASH_CHANNEL.send(parse_bytes!(Flash, data)).await;
-                vec![0]
-            }
-            Command::Summ => {
-                SUMMER_CHANNEL.send(parse_bytes!(Tone, data)).await;
-                vec![0]
-            }
             Command::ChangeConfig => {
                 let mut guard = CONFIG.lock().await;
                 *guard = Some(parse_bytes!(Config, data));
@@ -117,6 +109,14 @@ impl Command {
                 bytes.extend(config_bytes);
                 info!("web_usb_task: read config bytes: {:?}", &bytes.as_slice());
                 bytes
+            }
+            Command::Flash => {
+                FLASH_CHANNEL.send(parse_bytes!(Flash, data)).await;
+                vec![0]
+            }
+            Command::Summ => {
+                SUMMER_CHANNEL.send(parse_bytes!(Tone, data)).await;
+                vec![0]
             }
         }
     }

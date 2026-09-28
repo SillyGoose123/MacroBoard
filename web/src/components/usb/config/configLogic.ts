@@ -1,7 +1,7 @@
-import type {Config} from "@/../bindings/Config";
-import type {Effect} from "@/../bindings/Effect";
-import type {Action} from "@/../bindings/Action.ts";
-import type {KnobAction} from "@/../bindings/KnobAction";
+import type {Config} from "@bindings/Config";
+import type {Effect} from "@bindings/Effect";
+import type {Action} from "@bindings/Action.ts";
+import type {KnobAction} from "@bindings/KnobAction";
 
 export const DEFAULT_CONFIG: Config = {
   switchAction: [
@@ -36,10 +36,17 @@ export function isDefaultConfig(config: Config | null): boolean {
 }
 
 export type ConfigOptions = Action[] | KnobAction | Effect;
+export type EditComponentProps<T extends ConfigOptions> = {
+  part: T;
+  change: (part: ConfigOptions) => void;
+}
 
-
-export function changePart(config: Config, part: ConfigOptions, _index?: number): Config {
+export function changePart(config: Config, part: ConfigOptions, index?: number): Config {
   let newConfig: Config = {...config};
-  console.log(typeof part);
+
+  if ("colors" in part) newConfig.effect = part as Effect;
+  if ("knob" in part) newConfig.knobAction = part as KnobAction;
+  if(index && Array.isArray(part)) config.switchAction[index] = part as Action[];
+
   return newConfig;
 }
