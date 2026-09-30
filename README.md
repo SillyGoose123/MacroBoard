@@ -1,33 +1,23 @@
 # MacroBoard
 
-This project is split in two parts the embedded device driver and the web part for configuring it.
-
-## Technical
-
-The driver and the web page for configuring talk to each other via web usb.
+This project is split in two parts the embedded device firmware and the web part for configuring it.
 
 ## Firmware
+
+Built via the embassy framework.
 
 ### Hardware info
 
 [seeed studio RP2040](https://wiki.seeedstudio.com/XIAO-RP2040/)
 
-
-[https://crates.io/crates/embedded-hal](https://crates.io/crates/embedded-hal) [https://crates.io/crates/rp2040-hal](https://crates.io/crates/rp2040-hal)
-
 ### Requirements
 
 [https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
+### Usb descriptor docs
+
+[Microsoft Docs](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/standard-usb-descriptors)
+
 ## Web
 
-RUST GEHT NICHT, da web asm nicht aktuell is. also react daddy und ts-rs type gen
-
-## Ideas
-
--   Shared Profiles => exported configs so => web parts
-- Rust driver trait
-
-## Knowledge
-
-[USB](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/standard-usb-descriptors)
+Built with react and served by vite. It relios on the [Web USB Api](https://developer.mozilla.org/en-US/docs/Web/API/WebUSB_API).
