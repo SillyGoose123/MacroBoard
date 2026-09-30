@@ -9,6 +9,7 @@ Built via the embassy framework.
 ### Hardware info
 
 [seeed studio RP2040](https://wiki.seeedstudio.com/XIAO-RP2040/)
+Board was created by [@L-S-2020](https://github.com/L-S-2020/leoboard´).
 
 ### Requirements
 
