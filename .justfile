@@ -39,3 +39,6 @@
   rustup target add thumbv6m-none-eabi
   cargo install elf2uf2-rs
   cd web && bun install
+
+@setupDev: setup
+  cargo install probe-rs-tools
