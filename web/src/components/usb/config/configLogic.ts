@@ -36,9 +36,9 @@ export function isDefaultConfig(config: Config | null): boolean {
 }
 
 export type ConfigOptions = Action[] | KnobAction | Effect;
-export type EditComponentProps<T extends ConfigOptions> = {
+export type EditComponentProps<T> = {
   part: T;
-  change: (part: ConfigOptions) => void;
+  change: (part: T) => void;
 }
 
 export function changePart(config: Config, part: ConfigOptions, index?: number): Config {

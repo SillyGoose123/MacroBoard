@@ -17,8 +17,14 @@ export function useEditSwitch({part, change}: EditComponentProps<Action[]>) {
     change(newConfig);
   }, [part]);
 
+  const changeAction = useCallback((action: Action, index: number) => {
+    let newPart = {...part};
+    newPart[index] = action;
+    change(newPart)
+  }, [part, change]);
 
   return {
-    addAction
+    addAction,
+    changeAction
   }
 }

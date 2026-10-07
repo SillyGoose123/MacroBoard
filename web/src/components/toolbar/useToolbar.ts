@@ -2,6 +2,7 @@ import {useTranslation} from "@/components/TranslationProvider.tsx";
 import {useCallback, useEffect, useState} from "react";
 import {useTheme} from "@/components/ThemeProvider.tsx";
 import {toast} from "sonner";
+const downloadUrl = import.meta.env.BASE_URL + "/downloads/";
 
 //TODO: evaluate loading is needed
 export function useToolbar() {
@@ -27,11 +28,19 @@ export function useToolbar() {
     toast.error(error instanceof Error ? error.message : String(error));
   }
 
+  const download = () =>  {
+    window.open(downloadUrl + "firmware.uf2");
+    if(navigator.userAgent.includes("Linux")) {
+      window.open(downloadUrl + "70-macro-board.rules");
+    }
+  };
+
   return {
     theme,
     setTheme,
     isLoading,
     onLangChange,
+    download,
     t
   }
 }

@@ -24,6 +24,8 @@ export function ConfigEditor(props: UsbHookProps) {
           type={"Knob"}
           config={config}
           changeConfig={changeConfig}
+          beep={props.beep}
+          flash={props.flash}
         />
 
         {multiple(2, (index) =>
@@ -33,6 +35,8 @@ export function ConfigEditor(props: UsbHookProps) {
             num={index + 5}
             config={config}
             changeConfig={changeConfig}
+            beep={props.beep}
+            flash={props.flash}
           />
         )}
 
@@ -47,15 +51,19 @@ export function ConfigEditor(props: UsbHookProps) {
           type={"LED"}
           config={config}
           changeConfig={changeConfig}
+          beep={props.beep}
+          flash={props.flash}
         />
 
         {multiple(4, (index) =>
           <ConfigDialog
-            key={`switch-${index}`}
             type={"Switch"}
+            key={`switch-${index}`}
             num={index + 1}
             config={config}
             changeConfig={changeConfig}
+            beep={props.beep}
+            flash={props.flash}
           />
         )}
 
@@ -63,6 +71,8 @@ export function ConfigEditor(props: UsbHookProps) {
           type={"LED"}
           config={config}
           changeConfig={changeConfig}
+          beep={props.beep}
+          flash={props.flash}
         />
       </div>
 
@@ -71,6 +81,8 @@ export function ConfigEditor(props: UsbHookProps) {
           type={"LED"}
           config={config}
           changeConfig={changeConfig}
+          beep={props.beep}
+          flash={props.flash}
         />
 
         <span>{t("createdBy", {manufacturer})}</span>
@@ -79,6 +91,8 @@ export function ConfigEditor(props: UsbHookProps) {
           type={"LED"}
           config={config}
           changeConfig={changeConfig}
+          beep={props.beep}
+          flash={props.flash}
         />
 
         <span>{product}</span>
@@ -87,6 +101,8 @@ export function ConfigEditor(props: UsbHookProps) {
           type={"LED"}
           config={config}
           changeConfig={changeConfig}
+          beep={props.beep}
+          flash={props.flash}
         />
       </div>
 

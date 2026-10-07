@@ -7,10 +7,10 @@ import {ToolbarItem} from "@/components/toolbar/ToolbarItem.tsx";
 import {LangMenu} from "@/components/toolbar/LangMenu.tsx";
 import {Loader} from "@/components/Loader.tsx";
 
-const baseUrl = import.meta.env.BASE_URL
+const GITHUB_URL = "https://github.com/SillyGoose123/MacroBoard"
 
 export function Toolbar({children}: { children: ReactNode }) {
-  const {theme, setTheme, isLoading, onLangChange, t} = useToolbar();
+  const {theme, setTheme, isLoading, onLangChange, download, t} = useToolbar();
 
   return (
     <>
@@ -20,7 +20,13 @@ export function Toolbar({children}: { children: ReactNode }) {
         <ToolbarItem
           icon={<Download/>}
           tooltipContent={t("downloadFirmware")}
-          onClick={() => window.open(baseUrl + "firmware.uf2")}
+          onClick={download}
+        />
+
+        <ToolbarItem
+          icon={<img alt="GH" src="/icons/github.svg" />}
+          tooltipContent={t("sourceCodeGithub")}
+          onClick={() => window.open(GITHUB_URL)}
         />
 
         <ToolbarItem

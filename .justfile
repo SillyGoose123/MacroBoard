@@ -2,9 +2,8 @@
 @build: buildFirmware buildWeb
   mkdir -p "build"
   rm -rf "build/*"
-  cp "firmware/target/thumbv6m-none-eabi/release/firmware.uf2" "build/"
-
   cp -r web/dist/* build/
+  cp "firmware/target/thumbv6m-none-eabi/release/firmware.uf2" "build/downloads/"
 
 @buildFirmware:
   cd firmware && cargo deploy --release

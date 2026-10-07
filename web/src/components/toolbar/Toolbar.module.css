@@ -6,3 +6,8 @@
     top: 0;
     right: 0;
 }
+
+.toolbar img {
+    width: calc(var(--spacing) * 4);
+    height: calc(var(--spacing) * 4);
+}

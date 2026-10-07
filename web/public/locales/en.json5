@@ -12,5 +12,6 @@
   "Switch": "Switch",
   "Edit": "Edit {{type}}{num}:",
   "ConfigDialogDescription": "This dialog contains elements for changing the {{type}} configuration.",
-  "createdBy": "Created by {manufacturer}"
+  "createdBy": "Created by {manufacturer}",
+  "sourceCodeGithub": "See source code"
 }

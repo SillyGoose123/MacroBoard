@@ -12,5 +12,6 @@
   "Switch": "Taster",
   "Edit": "{{type}}{num} editieren:",
   "ConfigDialogDescription": "Dieser Dialog enthält Elemente um die {{type}} Konfiguration zu bearbeiten.",
-  "createdBy": "Erstellt von {manufacturer}"
+  "createdBy": "Erstellt von {manufacturer}",
+  "sourceCodeGithub": "Quellcode anschauen"
 }

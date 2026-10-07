@@ -1,6 +1,5 @@
 use crate::key::key_action::SlimKeyReport;
 use crate::{KEY_CHANNEL, mk_static};
-use defmt::info;
 use embassy_executor::{Spawner, task};
 use embassy_rp::peripherals::USB;
 use embassy_rp::usb::Driver;
