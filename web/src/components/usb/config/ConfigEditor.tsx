@@ -13,8 +13,7 @@ import {Loader} from "@/components/Loader.tsx";
 export function ConfigEditor(props: UsbHookProps) {
   const {t} = useTranslation();
   const {wasStored, isDefault, reload, reset, store, config, changeConfig} = useConfigEditor(props);
-
-  if (config == null) return <Loader isLoading={config == null}/>;
+  if (!config) return <Loader isLoading={!config}/>;
   return (
     <div className={styles.configEditor}>
 

@@ -1,8 +1,8 @@
 import {Button} from "@/shadcn/ui/button.tsx";
-import type {EditComponentProps} from "@/components/usb/config/configLogic.ts";
+import type {EditCompProps} from "@/components/usb/config/configLogic.ts";
 import type {Effect} from "@bindings/Effect";
 
-export function EditLed({part, change}: EditComponentProps<Effect>) {
+export function EditLed({part, change}: EditCompProps<Effect>) {
   return <>
     {JSON.stringify(part)}
     <Button onClick={() => change({

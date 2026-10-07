@@ -1,14 +1,9 @@
-import type {EditComponentProps} from "@/components/usb/config/configLogic.ts";
 import {Tone} from "@bindings/Tone.ts";
 import {Slider} from "@/shadcn/ui/slider.tsx";
 import {AudioLines} from "lucide-react";
-import type {UsbHookProps} from "@/components/usb/config/useConfigEditor.ts";
+import type {EditCompCommandProps} from "@/components/usb/config/configLogic.ts";
 
-type EditSummerActionProps = EditComponentProps<Tone> & {
-  beep: UsbHookProps["beep"]
-}
-
-export function EditSummerAction({change, part: tone, beep}: EditSummerActionProps) {
+export function EditSummerAction({change, part: tone, beep}: Omit<EditCompCommandProps<Tone>, "flash">) {
   return (<>
     <AudioLines/>
     <Slider

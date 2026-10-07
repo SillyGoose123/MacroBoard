@@ -1,30 +1,27 @@
-import {useCallback} from "react";
-import {Action} from "@bindings/Action.ts";
-import type {EditComponentProps} from "@/components/usb/config/configLogic.ts";
-import {Tone} from "@bindings/Tone.ts";
+import type { EditCompProps } from "@/components/usb/config/configLogic.ts";
+import { Action } from "@bindings/Action.ts";
+import { Tone } from "@bindings/Tone.ts";
 
 const typeData = {
-  [Action.keyAction]: {modifier: 0, keycodes: [0, 0, 0, 0, 0, 0]},
-  [Action.mouseAction]: {buttons: 0, pan: 0, wheel: 0, y: 0, x: 0},
+  [Action.keyAction]: { modifier: 0, keycodes: [0, 0, 0, 0, 0, 0] },
+  [Action.mouseAction]: { buttons: 0, pan: 0, wheel: 0, y: 0, x: 0 },
   [Action.summerAction]: Tone.default,
-  [Action.flash]: {}
-}
+  [Action.flash]: {},
+};
 
-export function useEditSwitch({part, change}: EditComponentProps<Action[]>) {
-  const addAction = useCallback((type: number) => {
-    const newConfig = [...part];
-    newConfig.push({type, data: typeData[type]} as Action);
-    change(newConfig);
-  }, [part]);
+export function useEditSwitch({ part, change }: EditCompProps<Action[]>) {
+  const addAction = (type: number) => {
+    change([...part, { type, data: typeData[type] } as Action]);
+  };
 
-  const changeAction = useCallback((action: Action, index: number) => {
-    let newPart = {...part};
+  const changeAction = (action: Action, index: number) => {
+    const newPart = [...part];
     newPart[index] = action;
-    change(newPart)
-  }, [part, change]);
+    change(newPart);
+  };
 
   return {
     addAction,
-    changeAction
-  }
+    changeAction,
+  };
 }

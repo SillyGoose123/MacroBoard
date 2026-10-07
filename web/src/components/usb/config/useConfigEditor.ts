@@ -1,12 +1,19 @@
-import type {useUsbReturnType} from "@/components/usb/useUsb.ts";
-import {useCallback, useEffect, useState} from "react";
-import type {Config} from "@bindings/Config";
-import {DEFAULT_CONFIG, isDefaultConfig, jsonEqual} from "@/components/usb/config/configLogic.ts";
-import {handleCatch} from "@/utils.ts";
+import {
+  DEFAULT_CONFIG,
+  isDefaultConfig,
+  jsonEqual,
+} from "@/components/usb/config/configLogic.ts";
+import type { useUsbReturnType } from "@/components/usb/useUsb.ts";
+import { handleCatch } from "@/utils.ts";
+import type { Config } from "@bindings/Config";
+import { useCallback, useEffect, useState } from "react";
 
-export type UsbHookProps = Pick<useUsbReturnType, "beep" | "flash" | "readConfig" | "sendConfig">;
+export type UsbHookProps = Pick<
+  useUsbReturnType,
+  "beep" | "flash" | "readConfig" | "sendConfig"
+>;
 
-export function useConfigEditor({readConfig, sendConfig}: UsbHookProps) {
+export function useConfigEditor({ readConfig, sendConfig }: UsbHookProps) {
   const [loaded, setLoaded] = useState<Config | null>(null);
   const [config, setConfig] = useState<Config | null>(null);
 
@@ -24,21 +31,24 @@ export function useConfigEditor({readConfig, sendConfig}: UsbHookProps) {
   const reset = () => setConfig(DEFAULT_CONFIG);
 
   const reload = useCallback(() => {
-    if(!loaded) return;
+    if (!loaded) return;
     setConfig(loaded);
   }, [loaded]);
 
   const store = useCallback(async () => {
-    if(!config) return;
+    if (!config) return;
     let wasStored = await sendConfig(config);
-    if(wasStored) setLoaded(config) ;
+    if (wasStored) setLoaded(config);
     return wasStored;
   }, [config]);
 
-  const changeConfig = useCallback((newConfig: Config) => {
-    if(config != null && jsonEqual(newConfig, config)) return;
-    setConfig({...newConfig});
-  }, [config]);
+  const changeConfig = useCallback(
+    (newConfig: Config) => {
+      if (!config || !newConfig || jsonEqual(newConfig, config)) return;
+      setConfig(newConfig);
+    },
+    [config],
+  );
 
   return {
     config,
@@ -47,6 +57,6 @@ export function useConfigEditor({readConfig, sendConfig}: UsbHookProps) {
     reset,
     reload,
     store,
-    changeConfig
+    changeConfig,
   };
 }

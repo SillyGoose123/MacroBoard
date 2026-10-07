@@ -1,34 +1,28 @@
+import type {Action} from "@bindings/Action.ts";
 import type {Config} from "@bindings/Config";
 import type {Effect} from "@bindings/Effect";
-import type {Action} from "@bindings/Action.ts";
 import type {KnobAction} from "@bindings/KnobAction";
+import type {UsbHookProps} from "@/components/usb/config/useConfigEditor.ts";
 
 export const DEFAULT_CONFIG: Config = {
-  switchAction: [
-    [],
-    [],
-    [],
-    [],
-    [],
-    []
-  ],
+  switchAction: [[], [], [], [], [], []],
   knobAction: {
     rotaryAction: {
       plus: [],
-      minus: []
+      minus: [],
     },
-    switch: []
+    switch: [],
   },
   effect: {
     colors: [],
-    timeDiff: 0
-  }
-}
+    timeDiff: 0,
+  },
+};
 
 export function jsonEqual(json1: object | null, json2: object | null): boolean {
-  if(!json1 && !json2) return true;
-  if(!json1 || !json2) return false;
-  return JSON.stringify(json1) == JSON.stringify(json2);
+  if (!json1 && !json2) return true;
+  if (!json1 || !json2) return false;
+  return JSON.stringify(json1) === JSON.stringify(json2);
 }
 
 export function isDefaultConfig(config: Config | null): boolean {
@@ -36,17 +30,20 @@ export function isDefaultConfig(config: Config | null): boolean {
 }
 
 export type ConfigOptions = Action[] | KnobAction | Effect;
-export type EditComponentProps<T> = {
+export type EditCompProps<T> = {
   part: T;
   change: (part: T) => void;
 }
+export type EditCompCommandProps<T> = EditCompProps<T> & Pick<UsbHookProps, "beep" | "flash">;
 
-export function changePart(config: Config, part: ConfigOptions, index?: number): Config {
-  let newConfig: Config = {...config};
-
+export function changePart(
+  config: Config,
+  part: ConfigOptions,
+  index?: number,
+): Config {
+  const newConfig: Config = structuredClone(config);
   if ("colors" in part) newConfig.effect = part as Effect;
   if ("knob" in part) newConfig.knobAction = part as KnobAction;
-  if(index && Array.isArray(part)) config.switchAction[index] = part as Action[];
-
+  if (index && Array.isArray(part)) newConfig.switchAction[index - 1] = part as Action[];
   return newConfig;
 }

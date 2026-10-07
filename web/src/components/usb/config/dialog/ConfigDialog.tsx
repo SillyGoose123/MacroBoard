@@ -16,7 +16,6 @@ import {EditSwitch} from "@/components/usb/config/dialog/edit-switch/EditSwitch.
 import styles from "./ConfigDialog.module.css";
 import type {UsbHookProps} from "@/components/usb/config/useConfigEditor.ts";
 
-
 type ConfigDialogProps = Pick<UsbHookProps, "beep" | "flash"> & {
   type: ConfigIconTypes;
   num?: number;
@@ -24,7 +23,7 @@ type ConfigDialogProps = Pick<UsbHookProps, "beep" | "flash"> & {
   changeConfig: (config: Config) => void,
 };
 
-export function ConfigDialog({type, num, config, changeConfig, beep}: ConfigDialogProps) {
+export function ConfigDialog({type, num, config, changeConfig, beep, flash}: ConfigDialogProps) {
   const {t} = useTranslation();
   const change = (part: ConfigOptions) => changeConfig(changePart(config, part, num));
 
@@ -44,7 +43,7 @@ export function ConfigDialog({type, num, config, changeConfig, beep}: ConfigDial
         </DialogHeader>
         {type == "LED" && <EditLed part={config.effect} change={change}/>}
         {type == "Knob" && <EditKnob part={config.knobAction} change={change}/>}
-        {type == "Switch" && num && <EditSwitch part={config.switchAction[num - 1]} change={change} beep={beep}/>}
+        {type == "Switch" && num && <EditSwitch part={config.switchAction[num - 1]} change={change} beep={beep} flash={flash}/>}
       </DialogContent>
     </Dialog>
   );

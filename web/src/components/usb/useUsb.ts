@@ -49,7 +49,6 @@ export function useUsb(): useUsbReturnType {
         && event.device.configuration?.interfaces?.at(3)?.claimed)
         setDevice(null);
     });
-
     return () => { ignore = true; };
   }, []);
 
